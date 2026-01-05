@@ -78,3 +78,28 @@ Splash screen files should be at least 2732px x 2732px.
 The format can be jpg or png.
 
 npx capacitor-assets generate
+
+
+
+
+#### GIT PUSH ####
+
+Go to github -> Settings -> Developer Settings -> Personal access token -> Fine-grained tokens
+Create new token 
+All Repositories
+Add Permissions -> Content
+Change context to "Read and write"
+Generate token
+
+
+Git Extensions -> Tools -> GitBash
+
+Check if you on the correct remote branch
+git remote -v
+
+should be something like 
+origin  https://github.com/KobusGitHub/JonkerBudgetSms.git (fetch)
+origin  https://github.com/KobusGitHub/JonkerBudgetSms.git (push)
+
+
+git push https://KobusGitHub:<YOUR_PERSONAL_TOKEN>@github.com/KobusGitHub/JonkerBudgetSms.git main
