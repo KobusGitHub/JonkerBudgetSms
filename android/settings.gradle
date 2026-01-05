@@ -1,0 +1,9 @@
+include ':app'
+include ':capacitor-cordova-android-plugins'
+project(':capacitor-cordova-android-plugins').projectDir = new File('./capacitor-cordova-android-plugins/')
+
+apply from: 'capacitor.settings.gradle'
+
+// The Manual Link
+include ':solimanware-capacitor-sms-reader'
+project(':solimanware-capacitor-sms-reader').projectDir = new File('../node_modules/@solimanware/capacitor-sms-reader/android')
