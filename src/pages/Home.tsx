@@ -160,13 +160,28 @@ const Home: React.FC = () => {
 
     console.log(`Setting up listener for ${budgetMonth} ${budgetYear}`);
 
+
+    const months = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+
+    let currentMonthIndex = months.findIndex(i => i.toLowerCase() === budgetMonth.toLowerCase());
+    let previousMonth = "January";
+    if(currentMonthIndex > 0){
+      previousMonth = months[currentMonthIndex - 1];
+    }
+    
+
+
     const smsExpenseCollection = collection(FIREBASE_DB, 'smsExpense');
     
     // 2. QUERY: Ensure the field names match your Firestore document keys exactly
     const q = query(
       smsExpenseCollection, 
       where('shareToken', '==', user.uid),
-      where('month', '==', budgetMonth),
+      // where('month', '==', budgetMonth),
+      where('month', 'in', [budgetMonth, previousMonth]),
       where('year', '==', budgetYear)
     );
 

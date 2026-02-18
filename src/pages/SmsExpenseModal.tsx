@@ -178,13 +178,18 @@ const SmsExpenseModal: React.FC<Props> = ({
           role: 'confirm',
           handler: () => {
             
+            var expenseComment = comment;
+            if(expenseComment == ''){
+              expenseComment = bankMessage.body;
+            }
+
             let smsExpenseModel: SmsExpenseModel = {
             smsId: bankMessage.id,
             smsBody: bankMessage.body,
             categoryName: bankMessage.categoryName,
             categoryGuidId: bankMessage.categoryGuidId,
             amount: amount,
-            comment: comment,
+            comment: expenseComment,
             onlyMarkAsCompleted: false,
             year: budgetYear,
             month: budgetMonth,
