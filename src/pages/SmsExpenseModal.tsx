@@ -252,6 +252,18 @@ const SmsExpenseModal: React.FC<Props> = ({
       return parseFloat(cleanNumber);
     }
 
+
+    const regex_Available = /R([-?\d,.]+)(?=,\s*Available)/;
+    const match_Available = body.match(regex_Available);
+
+    if (match_Available && match_Available[1]) {
+      // Remove the comma thousands-separator so parseFloat works (1,147.00 -> 1147.00)
+      const cleanNumber = match_Available[1].replace(/,/g, '');
+      let amount = parseFloat(cleanNumber);
+      return amount * -1; // Assuming Available balance means it's a debit (negative)
+    }
+
+
     return 0;
   };
 

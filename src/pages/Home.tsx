@@ -422,7 +422,8 @@ const Home: React.FC = () => {
 
     const identifiers = [
     'Absa: CCRD7037', 
-    'Absa: CCRD7029'
+    'Absa: CCRD7029',
+    'Absa: CHEQ6406'
   ];
 
 
