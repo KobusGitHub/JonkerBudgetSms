@@ -1,5 +1,5 @@
 import { IonButtons, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonFooter, IonHeader, IonIcon, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import { cardOutline, chatboxEllipsesOutline, cogOutline, documentTextOutline, pricetagsOutline, swapHorizontalOutline } from 'ionicons/icons';
+import { cardOutline, chatboxEllipsesOutline, cogOutline, documentTextOutline, layersOutline, pricetagsOutline, swapHorizontalOutline } from 'ionicons/icons';
 import { useAuth } from '../context/AuthContext';
 
 const Home: React.FC = () => {
@@ -12,6 +12,7 @@ const Home: React.FC = () => {
     { title: 'SMS Config', subtitle: 'Manage SMS matching settings', url: '/app/sms-config', icon: cogOutline },
     { title: 'Categories Setup', subtitle: 'Manage categories and budgets', url: '/app/categories-setup', icon: pricetagsOutline },
     { title: 'Expense Report', subtitle: 'View all transactions for a month', url: '/app/expense-report', icon: documentTextOutline },
+    { title: 'Category Group Report', subtitle: 'Spent vs budget per category', url: '/app/category-group-report', icon: layersOutline },
   ];
 
   return (

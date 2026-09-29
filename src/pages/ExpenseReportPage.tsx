@@ -80,9 +80,18 @@ const ExpenseReportPage: React.FC = () => {
             </IonHeader>
 
             <IonContent className='ion-padding'>
-                <IonItem lines='full'>
+                <IonItem
+                    lines='none'
+                    style={{
+                        '--background': 'rgba(var(--ion-color-primary-rgb), 0.08)',
+                        borderLeft: '4px solid var(--ion-color-primary)',
+                        borderRadius: '8px',
+                        marginBottom: '12px',
+                        boxShadow: '0 1px 4px rgba(0, 0, 0, 0.12)'
+                    }}
+                >
                     <IonLabel>
-                        <strong>Total</strong>
+                        <strong style={{ fontSize: '16px', textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--ion-color-primary)' }}>Total</strong>
                         <p>{expenses.length} transaction{expenses.length === 1 ? '' : 's'}</p>
                     </IonLabel>
                     <IonText slot='end' color='primary'>

@@ -1,5 +1,5 @@
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonSplitPane, IonMenu, IonRouterOutlet, IonMenuToggle, IonItem, IonDatetime, IonButton, IonIcon, IonFooter, } from '@ionic/react'
-import { cardOutline, chatboxEllipsesOutline, cogOutline, documentTextOutline, homeOutline, newspaperOutline, pricetagsOutline, swapHorizontalOutline } from 'ionicons/icons'
+import { cardOutline, chatboxEllipsesOutline, cogOutline, documentTextOutline, homeOutline, layersOutline, newspaperOutline, pricetagsOutline, swapHorizontalOutline } from 'ionicons/icons'
 import { Redirect, Route } from 'react-router'
 import Details from './Details'
 import Page1 from './Page1'
@@ -9,6 +9,7 @@ import SmsExpensePage from './SmsExpensePage'
 import SmsConfigPage from './SmsConfigPage'
 import CategoriesSetupPage from './CategoriesSetupPage'
 import ExpenseReportPage from './ExpenseReportPage'
+import CategoryGroupReportPage from './CategoryGroupReportPage'
 import LinkExpense from './LinkExpense'
 import { useAuth } from '../context/AuthContext'
 import BackButtonHandler from './BackButtonHandler'
@@ -27,6 +28,7 @@ const Menu: React.FC = () => {
         { name: 'SMS Config', url:'/app/sms-config', icon: cogOutline },
         { name: 'Categories Setup', url:'/app/categories-setup', icon: pricetagsOutline },
         { name: 'Expense Report', url:'/app/expense-report', icon: documentTextOutline },
+        { name: 'Category Group Report', url:'/app/category-group-report', icon: layersOutline },
     ]
 
  
@@ -73,6 +75,7 @@ const Menu: React.FC = () => {
                     <Route exact path="/app/sms-config" component={SmsConfigPage} />
                     <Route exact path="/app/categories-setup" component={CategoriesSetupPage} />
                     <Route exact path="/app/expense-report" component={ExpenseReportPage} />
+                    <Route exact path="/app/category-group-report" component={CategoryGroupReportPage} />
                     <Route exact path="/app/page1" component={Page1} />
                     <Route exact path="/app/page1/details" component={Details} />
                     <Route exact path="/app/page2" component={Page2} />
