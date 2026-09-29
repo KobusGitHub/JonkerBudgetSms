@@ -14,7 +14,7 @@ import { SmsConfigModel } from '../models/SmsConfigModel';
 
 
 
-const ConfigPage: React.FC = () => {
+const SmsConfigPage: React.FC = () => {
 
     const [show, hide] = useIonLoading();
     const [ present, dismiss ] = useIonAlert();
@@ -277,7 +277,7 @@ const ConfigPage: React.FC = () => {
                     <IonButtons slot='start'>
                         <IonMenuButton></IonMenuButton>
                     </IonButtons>
-                    <IonTitle>Config Page</IonTitle>
+                    <IonTitle>SMS Config</IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent className="ion-padding">
@@ -349,4 +349,4 @@ const ConfigPage: React.FC = () => {
     );
 };
 
-export default ConfigPage;
+export default SmsConfigPage;

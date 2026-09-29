@@ -18,7 +18,7 @@ import { sortCategories } from '../shared/utils';
 // Using the exact name you found in the Java folders
 const MessageReader = registerPlugin<any>('MessageReader');
 
-const Home: React.FC = () => {
+const SmsExpensePage: React.FC = () => {
   const { user } = useAuth(); 
   const router = useIonRouter();
   const [bankMessages, setBankMessages] = useState<MessageModel[]>([]);
@@ -455,38 +455,6 @@ const Home: React.FC = () => {
 
 
 
-  // const matchCategoryToMessage = (bankMessage: MessageModel) => {
-  //     const matchedConfig = smsConfig.find(config => {
-  //       let searchPatterns = config.searchPattern.split('|');
-  //       return searchPatterns.some(pattern => {
-  //         return bankMessage.body.includes(pattern)
-  //       });
-  //     });
-
-  //     if (matchedConfig) {
-  //       const matchedCategory = categories.find(cat => cat.guidId === matchedConfig.categoryGuidId);
-  //       if (matchedCategory) {
-  //         return {
-  //           ...bankMessage,
-  //           categoryName: matchedCategory.categoryName,
-  //           categoryGuidId: matchedCategory.guidId
-  //         };
-  //       }
-  //     }
-
-  //     return bankMessage; // No match, return original
-  // }
-
-  // const matchCategoriesToMessages = (bankMessages: MessageModel[]) => {
-  //   const updatedMessages = bankMessages.map(msg => {
-      
-
-  //     return matchCategoryToMessage(msg);
-  //   });
-
-  //   return updatedMessages;
-  // };
-
    const predictCategoryToMessage = (bankMessage: MessageModel) => {
 
       const lowerCaseBody = bankMessage.body.toLowerCase().trim();
@@ -531,34 +499,6 @@ const Home: React.FC = () => {
 
 
 
-// const fetchMessagesGreaterThanId = async (lastId: string) => {
-//   const lastIdNum = parseInt(lastId, 10);
-
-//   const result = await MessageReader.getMessages({
-//     limit: 100 // Get a larger batch to search through
-//   });
-
-//   const newMessages = result.messages.filter((msg: any) => {
-//     return parseInt(msg.id, 10) > lastIdNum;
-//   });
-
-//   setMessages(newMessages);
-// };
-
-
-
-// useEffect(() => {
-//   const interval = setInterval(() => {
-//     if (messages.length > 0) {
-//       const latestTimestamp = messages[0].date;
-//       fetchNewMessages(latestTimestamp);
-//     }
-//   }, 10000); // Check every 10 seconds
-
-//   return () => clearInterval(interval);
-// }, [messages])
-
-
   return (
     <IonPage>
        <IonHeader>
@@ -566,7 +506,7 @@ const Home: React.FC = () => {
               <IonButtons slot='start'>
                   <IonMenuButton></IonMenuButton>
               </IonButtons>
-              <IonTitle>Home Page</IonTitle>
+              <IonTitle>SMS Expenses</IonTitle>
           </IonToolbar>
 
           
@@ -608,11 +548,7 @@ const Home: React.FC = () => {
                 
           
           {bankMessages.map((msg) => (
-            // <div key={msg.id} style={{ border: '1px solid black', margin: '10px', padding: '10px' }}>
-            //   <p><strong>From:</strong> {msg.sender}</p>
-            //   <p><strong>Body:</strong> {msg.body}</p>
-            //   <p><strong>Date:</strong> {new Date(msg.date).toLocaleString()}</p>
-            // </div>
+          
 
             <IonCard key={msg.id} onClick={() => navigateToLinkExpense(msg)}>
               <IonCardHeader>
@@ -713,4 +649,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default SmsExpensePage;

@@ -1,0 +1,49 @@
+.category-action-sheet .action-sheet-group {
+    border-radius: 16px 16px 0 0;
+}
+
+.category-action-sheet .action-sheet-group-cancel {
+    border-radius: 0;
+}
+
+.category-action-sheet .action-sheet-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ion-color-primary);
+    text-align: center;
+    padding-top: 18px;
+}
+
+.category-action-sheet .action-sheet-sub-title {
+    font-size: 13px;
+    color: var(--ion-color-medium);
+    padding-top: 4px;
+}
+
+.category-action-sheet .action-sheet-button {
+    font-size: 16px;
+    padding-left: 24px;
+}
+
+.category-action-sheet .action-sheet-icon {
+    font-size: 22px;
+    margin-right: 16px;
+}
+
+.category-action-sheet .action-update .action-sheet-icon {
+    color: var(--ion-color-primary);
+}
+
+.category-action-sheet .action-history .action-sheet-icon {
+    color: var(--ion-color-secondary);
+}
+
+.category-action-sheet .action-sheet-destructive,
+.category-action-sheet .action-sheet-destructive .action-sheet-icon {
+    color: var(--ion-color-danger);
+}
+
+.category-action-sheet .action-sheet-cancel {
+    color: var(--ion-color-medium);
+    border-top: 1px solid var(--ion-color-light-shade);
+}

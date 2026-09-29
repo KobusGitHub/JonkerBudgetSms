@@ -1,11 +1,14 @@
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonSplitPane, IonMenu, IonRouterOutlet, IonMenuToggle, IonItem, IonDatetime, IonButton, IonIcon, IonFooter, } from '@ionic/react'
-import { cardOutline, cogOutline, homeOutline, newspaperOutline, swapHorizontalOutline } from 'ionicons/icons'
+import { cardOutline, chatboxEllipsesOutline, cogOutline, documentTextOutline, homeOutline, newspaperOutline, pricetagsOutline, swapHorizontalOutline } from 'ionicons/icons'
 import { Redirect, Route } from 'react-router'
 import Details from './Details'
 import Page1 from './Page1'
 import Page2 from './Page2'
 import Home from './Home'
-import ConfigPage from './ConfigPage'
+import SmsExpensePage from './SmsExpensePage'
+import SmsConfigPage from './SmsConfigPage'
+import CategoriesSetupPage from './CategoriesSetupPage'
+import ExpenseReportPage from './ExpenseReportPage'
 import LinkExpense from './LinkExpense'
 import { useAuth } from '../context/AuthContext'
 import BackButtonHandler from './BackButtonHandler'
@@ -18,9 +21,12 @@ const Menu: React.FC = () => {
     
     const paths = [
         { name: 'Home', url:'/app/home', icon: homeOutline },
+        { name: 'SMS Expense', url:'/app/sms-expense', icon: chatboxEllipsesOutline },
         { name: 'Expense', url:'/app/expense', icon: cardOutline },
         { name: 'Transfer', url:'/app/transfer', icon: swapHorizontalOutline },
-        { name: 'Config', url:'/app/configPage', icon: cogOutline },
+        { name: 'SMS Config', url:'/app/sms-config', icon: cogOutline },
+        { name: 'Categories Setup', url:'/app/categories-setup', icon: pricetagsOutline },
+        { name: 'Expense Report', url:'/app/expense-report', icon: documentTextOutline },
     ]
 
  
@@ -63,7 +69,10 @@ const Menu: React.FC = () => {
                 
                 <IonRouterOutlet id="main">
                     <Route exact path="/app/home" component={Home} />
-                    <Route exact path="/app/configPage" component={ConfigPage} />
+                    <Route exact path="/app/sms-expense" component={SmsExpensePage} />
+                    <Route exact path="/app/sms-config" component={SmsConfigPage} />
+                    <Route exact path="/app/categories-setup" component={CategoriesSetupPage} />
+                    <Route exact path="/app/expense-report" component={ExpenseReportPage} />
                     <Route exact path="/app/page1" component={Page1} />
                     <Route exact path="/app/page1/details" component={Details} />
                     <Route exact path="/app/page2" component={Page2} />
