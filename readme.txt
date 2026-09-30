@@ -52,7 +52,6 @@ npm run build-dev
 
 
 
-
 npm install @solimanware/capacitor-sms-reader --legacy-peer-deps
 
 Manifest
@@ -103,3 +102,10 @@ origin  https://github.com/KobusGitHub/JonkerBudgetSms.git (push)
 
 
 git push https://KobusGitHub:<YOUR_PERSONAL_TOKEN>@github.com/KobusGitHub/JonkerBudgetSms.git main
+
+
+
+
+#build apk
+npm run apk
+npm run apk:release

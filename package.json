@@ -12,7 +12,9 @@
     "lint": "eslint",
     "build-dev": "ionic cap build android --c development --env.dev",
     "build-qa": "ionic cap build android --c qa --env.qa",
-    "build-prod": "ionic cap build android --c production --env.prod"
+    "build-prod": "ionic cap build android --c production --env.prod",
+    "apk": "powershell -ExecutionPolicy Bypass -File ./build-apk.ps1",
+    "apk:release": "powershell -ExecutionPolicy Bypass -File ./build-apk.ps1 -Release"
   },
   "dependencies": {
     "@capacitor/android": "^7.4.2",

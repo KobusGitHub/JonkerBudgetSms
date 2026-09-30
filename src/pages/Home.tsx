@@ -1,5 +1,5 @@
 import { IonButtons, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonFooter, IonHeader, IonIcon, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import { cardOutline, chatboxEllipsesOutline, cogOutline, documentTextOutline, layersOutline, pricetagsOutline, swapHorizontalOutline, trendingUpOutline } from 'ionicons/icons';
+import { cardOutline, chatboxEllipsesOutline, cogOutline, documentTextOutline, layersOutline, peopleOutline, pricetagsOutline, swapHorizontalOutline, trendingUpOutline } from 'ionicons/icons';
 import { useAuth } from '../context/AuthContext';
 
 const Home: React.FC = () => {
@@ -14,6 +14,7 @@ const Home: React.FC = () => {
     { title: 'Expense Report', subtitle: 'View all transactions for a month', url: '/app/expense-report', icon: documentTextOutline },
     { title: 'Category Group Report', subtitle: 'Spent vs budget per category', url: '/app/category-group-report', icon: layersOutline },
     { title: 'Forecast', subtitle: 'Forecast what will be left this month', url: '/app/forecast', icon: trendingUpOutline },
+    { title: 'User Management', subtitle: 'Manage users and budgets', url: '/app/user-management', icon: peopleOutline },
   ];
 
   return (

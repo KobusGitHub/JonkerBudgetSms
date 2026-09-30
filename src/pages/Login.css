@@ -1,0 +1,72 @@
+.login-content {
+    --background: linear-gradient(160deg, rgba(var(--ion-color-primary-rgb), 0.18) 0%, var(--ion-background-color, #fff) 55%);
+}
+
+.login-wrapper {
+    min-height: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-brand {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.login-logo {
+    width: 84px;
+    height: 84px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--ion-color-primary);
+    color: var(--ion-color-primary-contrast);
+    font-size: 44px;
+    box-shadow: 0 6px 16px rgba(var(--ion-color-primary-rgb), 0.35);
+}
+
+.login-brand h1 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--ion-color-primary);
+}
+
+.login-brand p {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: var(--ion-color-medium);
+}
+
+.login-card {
+    margin: 0;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.login-card ion-card-content {
+    padding: 24px 20px 12px;
+}
+
+.login-input {
+    margin-bottom: 16px;
+    --border-radius: 10px;
+}
+
+.login-button {
+    margin-top: 8px;
+    height: 48px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.login-forgot {
+    margin-top: 4px;
+    text-transform: none;
+}
