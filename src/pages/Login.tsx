@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { FIREBASE_AUTH } from '../config/FirebaseConfig';
 import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 import { useAuth } from '../context/AuthContext';
-import { useEffect } from 'react';
+import { Redirect } from 'react-router';
 
 
 type FormValues = {
@@ -17,19 +17,15 @@ type FormValues = {
 const Login: React.FC = () => {
     const { register, handleSubmit, formState: { errors, isValid}, getValues } = useForm<FormValues>({mode: 'onBlur'}); 
 
-    const navigation = useIonRouter();
     const [ show, hide ] = useIonLoading();
     const [ present, dismiss ] = useIonAlert();
 
     const { user, initialized } = useAuth();
-    const router = useIonRouter();
-    const checkingSession = !initialized || !!user;
+    const checkingSession = !initialized;
 
-    useEffect(() => {
-        if(user) {
-            router.push('/app/home', 'forward', 'replace');
-        }
-    }, [user]);
+    if (initialized && user) {
+        return <Redirect to='/app/home' />;
+    }
 
     // const doLogin = () => {
     //     navigation.push('/app', 'root', 'replace');
@@ -100,7 +96,7 @@ const Login: React.FC = () => {
            
             <IonHeader>
                <IonToolbar color={'primary'}>
-                    <IonTitle>Jonker Budget Login</IonTitle>
+                    <IonTitle>Home Budget Login</IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent className='login-content'>
@@ -109,7 +105,7 @@ const Login: React.FC = () => {
                         <div className='login-logo'>
                             <IonIcon icon={walletOutline} />
                         </div>
-                        <h1>Jonker Budget</h1>
+                        <h1>Home Budget</h1>
                         <p>{checkingSession ? 'Checking your session...' : 'Sign in to manage your budget'}</p>
                     </div>
 

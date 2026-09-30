@@ -27,12 +27,12 @@ export const AuthProvider = ({children}: PropsWithChildren) => {
 
 
     useEffect(() => {
-        onAuthStateChanged(FIREBASE_AUTH, (user) => {
+        return onAuthStateChanged(FIREBASE_AUTH, (user) => {
             console.log('AUTH CHANTED: ', user);
 
             setUser(user);
             setinitialized(true);
-        }) 
+        });
     }, [])
 
     useEffect(() => {

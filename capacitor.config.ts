@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
-  appName: 'JonkerBudgetSms',
+  appName: 'Home Budget',
   webDir: 'dist',
   server: {
     androidScheme: 'https'

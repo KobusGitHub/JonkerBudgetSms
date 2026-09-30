@@ -1,5 +1,5 @@
 {
-  "name": "JonkerBudgetSms",
+  "name": "home-budget-sms",
   "integrations": {
     "capacitor": {}
   },

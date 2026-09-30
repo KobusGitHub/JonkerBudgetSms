@@ -640,7 +640,7 @@ const SmsExpensePage: React.FC = () => {
       <IonFooter style={{ height: '24px' }}>
         <IonToolbar>
           <div style={{ paddingBottom:' 30px', height: '24px', lineHeight: '24px', fontSize: '12px', paddingRight: '16px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end',  width: '100%', color: '#6b7dba' }}>
-            Jonker Budget Home
+            Home Budget
           </div>
         </IonToolbar>
       </IonFooter>

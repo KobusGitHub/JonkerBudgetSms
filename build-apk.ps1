@@ -61,7 +61,7 @@ if ($Release) {
 
     $apk = Get-ChildItem (Join-Path $root 'android\app\build\outputs\apk\release') -Filter '*.apk' |
         Sort-Object LastWriteTime -Descending | Select-Object -First 1
-    $target = Join-Path $outDir "JonkerBudget-release-$stamp.apk"
+    $target = Join-Path $outDir "HomeBudget-release-$stamp.apk"
 } else {
     Push-Location (Join-Path $root 'android')
     try {
@@ -71,7 +71,7 @@ if ($Release) {
     }
 
     $apk = Get-Item (Join-Path $root 'android\app\build\outputs\apk\debug\app-debug.apk')
-    $target = Join-Path $outDir "JonkerBudget-debug-$stamp.apk"
+    $target = Join-Path $outDir "HomeBudget-debug-$stamp.apk"
 }
 
 if (-not $apk) { throw 'Build finished but no APK was found.' }
