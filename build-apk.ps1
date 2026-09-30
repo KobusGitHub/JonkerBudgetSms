@@ -32,8 +32,8 @@ if (-not $env:JAVA_HOME) {
     }
 }
 
-Invoke-Step 'Building web app' { npm run build }
-Invoke-Step 'Syncing Capacitor Android project' { npx cap sync android }
+Invoke-Step 'Building web app' { pnpm run build }
+Invoke-Step 'Syncing Capacitor Android project' { pnpm exec cap sync android }
 
 $outDir = Join-Path $root 'apk'
 New-Item -ItemType Directory -Force -Path $outDir | Out-Null
@@ -48,7 +48,7 @@ if ($Release) {
 
     try {
         Invoke-Step 'Building signed release APK' {
-            npx cap build android `
+            pnpm exec cap build android `
                 --keystorepath $keystore `
                 --keystorepass $pass `
                 --keystorealias $KeystoreAlias `

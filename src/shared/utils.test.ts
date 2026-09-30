@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { normalizeAmountInput } from './utils';
 
 describe('normalizeAmountInput', () => {
