@@ -1,4 +1,4 @@
-import { IonButtons, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonItem, IonLabel, IonList, IonMenuButton, IonPage, IonProgressBar, IonRow, IonSpinner, IonText, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonItem, IonLabel, IonList, IonMenuButton, IonModal, IonNote, IonPage, IonProgressBar, IonRow, IonSpinner, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { collection, DocumentData, onSnapshot, query, where } from 'firebase/firestore';
 import { useEffect, useMemo, useState } from 'react';
 import { FIREBASE_DB } from '../config/FirebaseConfig';
@@ -63,6 +63,7 @@ const CategoryGroupReportPage: React.FC = () => {
     const [categories, setCategories] = useState<CategoryModel[]>([]);
     const [expenses, setExpenses] = useState<ExpenseModel[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [selectedGroup, setSelectedGroup] = useState<CategoryGroup | null>(null);
 
     // Includes deleted categories so older expenses still group under a name
     useEffect(() => {
@@ -171,7 +172,7 @@ const CategoryGroupReportPage: React.FC = () => {
                 ) : (
                     <IonList>
                         {groups.map(g => (
-                            <IonItem key={g.guidId}>
+                            <IonItem key={g.guidId} button detail onClick={() => setSelectedGroup(g)}>
                                 <IonLabel>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
                                         <h2 style={{ margin: 0 }}>{g.categoryName}</h2>
@@ -186,6 +187,47 @@ const CategoryGroupReportPage: React.FC = () => {
                     </IonList>
                 )}
             </IonContent>
+
+            <IonModal isOpen={selectedGroup !== null} onDidDismiss={() => setSelectedGroup(null)}>
+                <IonHeader>
+                    <IonToolbar color='primary'>
+                        <IonTitle>{selectedGroup?.categoryName ?? 'Transactions'}</IonTitle>
+                        <IonButtons slot='end'>
+                            <IonButton onClick={() => setSelectedGroup(null)}>Close</IonButton>
+                        </IonButtons>
+                    </IonToolbar>
+                </IonHeader>
+                <IonContent className='ion-padding'>
+                    {selectedGroup && (
+                        <>
+                            <IonText color='medium'>
+                                <p>{selectedGroup.count} transaction{selectedGroup.count === 1 ? '' : 's'} in {month} {year}</p>
+                            </IonText>
+                            <IonList>
+                                {expenses
+                                    .filter(expense => expense.categoryGuidId === selectedGroup.guidId)
+                                    .sort((a, b) => new Date(b.recordDate).getTime() - new Date(a.recordDate).getTime())
+                                    .map(expense => {
+                                        const amount = Number(expense.expenseValue) || 0;
+                                        return (
+                                            <IonItem key={expense.guidId} lines='full'>
+                                                <IonLabel style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                                    {expense.comment && <h2 style={{ margin: 0, whiteSpace: 'normal' }}>{expense.comment}</h2>}
+                                                    <IonNote>
+                                                        {new Date(expense.recordDate).toLocaleString()}
+                                                    </IonNote>
+                                                </IonLabel>
+                                                <IonText slot='end' color={amount < 0 ? 'success' : 'dark'}>
+                                                    {currencyFormatter.format(amount)}
+                                                </IonText>
+                                            </IonItem>
+                                        );
+                                    })}
+                            </IonList>
+                        </>
+                    )}
+                </IonContent>
+            </IonModal>
 
             <IonFooter style={{ height: '24px' }}>
                 <IonToolbar>

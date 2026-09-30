@@ -10,6 +10,8 @@ interface AuthProps {
     profile?: UserModel | null;
     isAdmin?: boolean;
     initialized?: boolean;
+    welcomePending?: boolean;
+    consumeWelcome?: () => void;
     logout?: () => Promise<void>;
 }
 
@@ -22,8 +24,9 @@ export function useAuth() {
 
 export const AuthProvider = ({children}: PropsWithChildren) => {
     const [user, setUser] = useState<User | null>(null);
-    const [profile, setProfile] = useState<UserModel | null>(null);
+    const [profile, setProfile] = useState<UserModel | null | undefined>(undefined);
     const [initialized, setinitialized] = useState<boolean>(false);
+    const [welcomePending, setWelcomePending] = useState(false);
 
 
     useEffect(() => {
@@ -31,6 +34,7 @@ export const AuthProvider = ({children}: PropsWithChildren) => {
             console.log('AUTH CHANTED: ', user);
 
             setUser(user);
+            setWelcomePending(!!user);
             setinitialized(true);
         });
     }, [])
@@ -55,6 +59,8 @@ export const AuthProvider = ({children}: PropsWithChildren) => {
         profile,
         isAdmin: profile?.isAdmin === true,
         initialized,
+        welcomePending,
+        consumeWelcome: () => setWelcomePending(false),
         logout: () => signOut(FIREBASE_AUTH)
     }
 
