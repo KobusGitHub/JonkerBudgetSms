@@ -6,7 +6,7 @@ import { FIREBASE_DB } from '../config/FirebaseConfig';
 import { useAuth } from '../context/AuthContext';
 import { CategoryModel } from '../models/CategoryModel';
 import { ExpenseModel } from '../models/ExpenseModel';
-import { currencyFormatter, sortCategories } from '../shared/utils';
+import { currencyFormatter, normalizeAmountInput, sortCategories } from '../shared/utils';
 import './CategoriesSetupPage.css';
 
 const MONTHS = [
@@ -38,6 +38,7 @@ const CategoriesSetupPage: React.FC = () => {
 
     const [categories, setCategories] = useState<CategoryModel[]>([]);
     const [category, setCategory] = useState<CategoryModel>(emptyCategory);
+    const [budgetText, setBudgetText] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const [historyCategory, setHistoryCategory] = useState<CategoryModel | null>(null);
@@ -74,18 +75,25 @@ const CategoriesSetupPage: React.FC = () => {
 
     const openModal = (cat: CategoryModel) => {
         setCategory(cat);
+        setBudgetText(String(cat.budget ?? 0));
         setIsModalOpen(true);
     };
 
     const closeModal = () => {
         setIsModalOpen(false);
         setCategory(emptyCategory);
+        setBudgetText('');
     };
 
     const saveCategory = async () => {
         const name = category.categoryName.trim();
         if (!name) {
             presentToast({ message: 'Category name is required', duration: 2000, color: 'danger' });
+            return;
+        }
+
+        if (!Number.isFinite(category.budget) || category.budget < 0) {
+            presentToast({ message: 'Category budget must be 0 or greater', duration: 2000, color: 'danger' });
             return;
         }
 
@@ -246,10 +254,14 @@ const CategoriesSetupPage: React.FC = () => {
                             <IonInput
                                 label='Budget'
                                 labelPlacement='floating'
-                                type='number'
+                                type='text'
                                 inputmode='decimal'
-                                value={category.budget}
-                                onIonInput={(e) => setCategory(prev => ({ ...prev, budget: parseFloat(e.detail.value ?? '') || 0 }))}
+                                value={budgetText}
+                                onIonInput={(e) => {
+                                    const value = normalizeAmountInput(e.detail.value ?? '');
+                                    setBudgetText(value);
+                                    setCategory(prev => ({ ...prev, budget: parseFloat(value) || 0 }));
+                                }}
                             />
                         </IonItem>
                         <IonItem>

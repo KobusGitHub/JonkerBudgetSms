@@ -6,6 +6,7 @@ import { FIREBASE_DB } from '../config/FirebaseConfig';
 import { useAuth } from '../context/AuthContext';
 import './BudgetSetupPage.css';
 import { getConfiguredBudgetPeriod, MONTHS, saveConfiguredBudgetPeriod } from '../shared/budgetPeriod';
+import { normalizeAmountInput } from '../shared/utils';
 
 const BudgetSetupPage: React.FC = () => {
     const { profile } = useAuth();
@@ -62,11 +63,13 @@ const BudgetSetupPage: React.FC = () => {
                     <IonItem className='budget-input' fill='outline'>
                         <IonLabel position='stacked'>Budget amount</IonLabel>
                         <IonInput
-                            type='number'
-                            min='0'
+                            type='text'
                             inputmode='decimal'
                             value={budget}
-                            onIonInput={event => setBudget(event.detail.value ?? '')}
+                            onIonInput={event => {
+                                const value = normalizeAmountInput(event.detail.value ?? '');
+                                setBudget(value);
+                            }}
                         />
                     </IonItem>
 

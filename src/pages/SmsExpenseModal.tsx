@@ -23,7 +23,7 @@ import { FIREBASE_DB } from '../config/FirebaseConfig';
 import { useAuth } from '../context/AuthContext';
 import { ExpenseModel } from '../models/ExpenseModel';
 import BudgetSetup from './BudgetSetup';
-import { calculateBudgetLeft, currencyFormatter } from '../shared/utils';
+import { calculateBudgetLeft, currencyFormatter, normalizeAmountInput } from '../shared/utils';
 
 interface Props {
   isOpen: boolean; // Control visibility from parent if not using trigger
@@ -53,6 +53,7 @@ const SmsExpenseModal: React.FC<Props> = ({
   const [selectedCategory, setSelectedCategory] = useState<CategoryModel>();
 
   const [amount, setAmount] = useState<number>(0);
+  const [amountText, setAmountText] = useState<string>('');
   const [comment, setComment] = useState<string>('');
   const [expenses, setExpenses] = useState<ExpenseModel[]>([]);
   const [expenseCatHistory, setExpenseCatHistory] = useState<ExpenseModel[]>([]);
@@ -78,6 +79,7 @@ const SmsExpenseModal: React.FC<Props> = ({
     if (bankMessage?.body) {
       const extracted = extractAmount(bankMessage.body);
       setAmount(extracted);
+      setAmountText(String(extracted));
       setComment('');
      
       const fExp = getfilterExpenses(bankMessage.categoryGuidId || '');
@@ -166,8 +168,10 @@ const SmsExpenseModal: React.FC<Props> = ({
     }
     
     presentAlert({
-      header: 'Confirm Expense',
-      message: `Are you sure you want to save R${amount} for ${bankMessage.categoryName}?`,
+      header: amount < 0 ? 'Confirm Refund' : 'Confirm Expense',
+      message: amount < 0
+        ? `Record ${currencyFormatter.format(amount)} as money returned to ${bankMessage.categoryName}?`
+        : `Record ${currencyFormatter.format(amount)} as an expense for ${bankMessage.categoryName}?`,
       buttons: [
         {
           text: 'Cancel',
@@ -417,13 +421,15 @@ const SmsExpenseModal: React.FC<Props> = ({
           <IonInput
             label="Amount (R)"
             labelPlacement="floating"
-            type="number" // Trigger numeric keypad
+            type="text"
             placeholder="0.00"
-            inputmode="decimal" // Allows for decimal point on mobile
-            value={amount} // Assumes you add 'amount' to your model
+            inputmode="decimal"
+            value={amountText}
             onIonInput={(e) => {
-              const val = e.detail.value;
-              setAmount(val ? parseFloat(val) : 0);// Convert string to number
+              const val = normalizeAmountInput(e.detail.value ?? '');
+              setAmountText(val);
+              const parsed = parseFloat(val);
+              setAmount(isNaN(parsed) ? 0 : parsed);
             }}
           />
         </IonItem>

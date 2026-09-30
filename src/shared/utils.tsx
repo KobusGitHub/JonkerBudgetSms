@@ -1,6 +1,12 @@
 import { CategoryModel } from '../models/CategoryModel';
 import { ExpenseModel } from '../models/ExpenseModel';
 
+export const normalizeAmountInput = (value: string): string => {
+    const normalized = value.replace(',', '.');
+    const isNegative = normalized.startsWith('-');
+    const amount = normalized.replace(/[^0-9.]/g, '');
+    return isNegative ? `-${amount}` : amount;
+};
 
 export const sortCategories = (categories: CategoryModel[]): CategoryModel[] => {
     return [...categories].sort((a: any, b: any) => {

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { FIREBASE_DB } from '../config/FirebaseConfig';
 import { collection, doc, DocumentData, onSnapshot, orderBy, query, setDoc, where } from 'firebase/firestore';
 import { useAuth } from '../context/AuthContext';
-import { calculateBudgetLeft, currencyFormatter, sortCategories } from '../shared/utils';
+import { calculateBudgetLeft, currencyFormatter, normalizeAmountInput, sortCategories } from '../shared/utils';
 import { CategoryModel } from '../models/CategoryModel';
 import { ExpenseModel } from '../models/ExpenseModel';
 import { cardOutline, pencilOutline, timeOutline } from 'ionicons/icons';
@@ -30,6 +30,7 @@ const TransferPage: React.FC = () => {
     const [fromFilteredExpenses, setFromFilteredExpenses] = useState<ExpenseModel[]>([]);
     const [toFilteredExpenses, setToFilteredExpenses] = useState<ExpenseModel[]>([]);
     const [amount, setAmount] = useState<number>(0);
+    const [amountText, setAmountText] = useState<string>('');
     const [comment, setComment] = useState<string>('');
 
     const [presentToast, dismissToast] = useIonToast();
@@ -42,6 +43,7 @@ const TransferPage: React.FC = () => {
 
     const resetForm = () => {
         setAmount(0);
+        setAmountText('');
         setComment('');
         setFromCategory(undefined);
         setToCategory(undefined);
@@ -121,14 +123,20 @@ const TransferPage: React.FC = () => {
             return;
         }
 
-        if (amount <= 0) {
-            presentToast({ message: 'Please enter an amount greater than 0.', duration: 2000, color: 'warning' });
+        if (amount === 0) {
+            presentToast({ message: 'Please enter an amount other than 0.', duration: 2000, color: 'warning' });
             return;
         }
+
+        const transferAmount = Math.abs(amount);
+        const debitCategory = amount < 0 ? toCategory : fromCategory;
+        const creditCategory = amount < 0 ? fromCategory : toCategory;
         
         presentAlert({
-            header: 'Confirm Expense',
-            message: `Are you sure you want to transfer ${currencyFormatter.format(amount)} from ${fromCategory?.categoryName} to ${toCategory?.categoryName}?`,
+            header: 'Confirm Transfer',
+            message: amount < 0
+                ? `The entered amount is ${currencyFormatter.format(amount)}. This reverses the selected direction and transfers ${currencyFormatter.format(transferAmount)} from ${debitCategory.categoryName} to ${creditCategory.categoryName}. Continue?`
+                : `Transfer ${currencyFormatter.format(transferAmount)} from ${debitCategory.categoryName} to ${creditCategory.categoryName}?`,
             buttons: [
             {
                 text: 'Cancel',
@@ -141,10 +149,10 @@ const TransferPage: React.FC = () => {
 
                     const myDate = new Date();
                     let fromExp : ExpenseModel = {
-                        categoryGuidId: fromCategory.guidId,
+                        categoryGuidId: debitCategory.guidId,
                         comment: comment,
                         expenseCode: crypto.randomUUID(),
-                        expenseValue: amount * (-1),
+                        expenseValue: -transferAmount,
                         guidId: '',
                         month: budgetMonth,
                         recordDate: myDate.toString(),
@@ -154,10 +162,10 @@ const TransferPage: React.FC = () => {
                     writeExpenseToFirebase(fromExp);
 
                     let toExp : ExpenseModel = {
-                        categoryGuidId: toCategory.guidId,
+                        categoryGuidId: creditCategory.guidId,
                         comment: comment,
                         expenseCode: crypto.randomUUID(),
-                        expenseValue: amount,
+                        expenseValue: transferAmount,
                         guidId: '',
                         month: budgetMonth,
                         recordDate: myDate.toString(),
@@ -447,13 +455,15 @@ const TransferPage: React.FC = () => {
                     <IonInput
                         label="Amount (R)"
                         labelPlacement="floating"
-                        type="number" // Trigger numeric keypad
+                        type="text"
                         placeholder="0.00"
-                        inputmode="decimal" // Allows for decimal point on mobile
-                        value={amount} // Assumes you add 'amount' to your model
+                        inputmode="decimal"
+                        value={amountText}
                         onIonInput={(e) => {
-                            const val = e.detail.value;
-                            setAmount(val ? parseFloat(val) : 0);// Convert string to number
+                            const val = normalizeAmountInput(e.detail.value ?? '');
+                            setAmountText(val);
+                            const parsed = parseFloat(val);
+                            setAmount(isNaN(parsed) ? 0 : parsed);
                         }}
                     />
                 </IonItem>

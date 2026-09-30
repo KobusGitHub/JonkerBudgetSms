@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { FIREBASE_DB } from '../config/FirebaseConfig';
 import { collection, doc, DocumentData, onSnapshot, orderBy, query, setDoc, where } from 'firebase/firestore';
 import { useAuth } from '../context/AuthContext';
-import { calculateBudgetLeft, currencyFormatter, sortCategories } from '../shared/utils';
+import { calculateBudgetLeft, currencyFormatter, normalizeAmountInput, sortCategories } from '../shared/utils';
 import { getConfiguredBudgetPeriod } from '../shared/budgetPeriod';
 import { CategoryModel } from '../models/CategoryModel';
 import { ExpenseModel } from '../models/ExpenseModel';
@@ -110,8 +110,10 @@ const ExpensePage: React.FC = () => {
         
         
         presentAlert({
-            header: 'Confirm Expense',
-            message: `Are you sure you want to save ${currencyFormatter.format(amount)} for ${activeCategory?.categoryName}?`,
+            header: amount < 0 ? 'Confirm Refund' : 'Confirm Expense',
+            message: amount < 0
+                ? `Record ${currencyFormatter.format(amount)} as money returned to ${activeCategory.categoryName}?`
+                : `Record ${currencyFormatter.format(amount)} as an expense for ${activeCategory.categoryName}?`,
             buttons: [
             {
                 text: 'Cancel',
@@ -326,7 +328,7 @@ const ExpensePage: React.FC = () => {
                         inputmode="decimal"
                         value={amountText}
                         onIonInput={(e) => {
-                            const val = (e.detail.value ?? '').replace(',', '.').replace(/[^0-9.]/g, '');
+                            const val = normalizeAmountInput(e.detail.value ?? '');
                             setAmountText(val);
                             const parsed = parseFloat(val);
                             setAmount(isNaN(parsed) ? 0 : parsed);
