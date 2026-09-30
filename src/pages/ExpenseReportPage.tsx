@@ -7,16 +7,16 @@ import { CategoryModel } from '../models/CategoryModel';
 import { ExpenseModel } from '../models/ExpenseModel';
 import { currencyFormatter } from '../shared/utils';
 import BudgetSetup from './BudgetSetup';
+import { getConfiguredBudgetPeriod } from '../shared/budgetPeriod';
 
 const ExpenseReportPage: React.FC = () => {
     const { user } = useAuth();
 
     const [year, setYear] = useState(() => {
-        const stored = localStorage.getItem('budget_year');
-        return stored ? parseInt(stored) : new Date().getFullYear();
+        return getConfiguredBudgetPeriod().year;
     });
     const [month, setMonth] = useState(() =>
-        localStorage.getItem('budget_month') ?? new Date().toLocaleString('default', { month: 'long' })
+        getConfiguredBudgetPeriod().month
     );
 
     const [categories, setCategories] = useState<CategoryModel[]>([]);

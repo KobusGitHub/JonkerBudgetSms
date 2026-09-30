@@ -1,0 +1,90 @@
+.budget-setup-content {
+    --background: #ffffff;
+    background: #ffffff;
+    color: #222428;
+}
+
+.budget-setup-card {
+    max-width: 520px;
+    margin: 24px auto 16px;
+    padding: 24px 20px 20px;
+    background: #ffffff;
+    color: #222428;
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.budget-setup-icon {
+    font-size: 42px;
+}
+
+.budget-setup-card h1 {
+    margin: 10px 0 4px;
+    color: var(--ion-color-primary);
+    font-size: 22px;
+}
+
+.budget-setup-card p {
+    margin: 0 0 20px;
+    color: var(--ion-color-medium);
+    font-size: 14px;
+}
+
+.budget-input {
+    margin-bottom: 16px;
+    --border-radius: 8px;
+    --background: #ffffff;
+    --color: #222428;
+}
+
+.budget-period-section {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--ion-color-light-shade);
+    text-align: left;
+}
+
+.budget-period-section h2 {
+    margin: 0 0 4px;
+    color: var(--ion-color-primary);
+    font-size: 17px;
+}
+
+.budget-period-section p {
+    margin-bottom: 14px;
+    font-size: 12px;
+}
+
+.budget-period-input {
+    margin-bottom: 10px;
+    --border-radius: 8px;
+    --background: #ffffff;
+    --color: #222428;
+}
+
+.share-token-item {
+    max-width: 520px;
+    margin: 0 auto;
+    --background: #ffffff;
+    --color: #222428;
+    border-left: 4px solid var(--ion-color-secondary);
+    border-radius: 8px;
+}
+
+.share-token-item p {
+    margin: 6px 0 0;
+    color: var(--ion-color-dark);
+    font-family: monospace;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.app-footer-label {
+    height: 24px;
+    padding-right: 16px;
+    color: #6b7dba;
+    font-size: 12px;
+    line-height: 24px;
+    text-align: right;
+}

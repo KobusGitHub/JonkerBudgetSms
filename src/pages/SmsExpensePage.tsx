@@ -13,6 +13,7 @@ import { SmsExpenseModel } from '../models/SmsExpenseModel';
 import BudgetSetup from './BudgetSetup';
 import { ExpenseModel } from '../models/ExpenseModel';
 import { sortCategories } from '../shared/utils';
+import { getConfiguredBudgetPeriod } from '../shared/budgetPeriod';
 
 
 // Using the exact name you found in the Java folders
@@ -39,15 +40,9 @@ const SmsExpensePage: React.FC = () => {
   const [isCategoryLoaded, setIsCategoryLoaded] = useState(false);
   const [isConfigLoaded, setIsConfigLoaded] = useState(false);
 
-  const [budgetYear, setBudgetYear] = useState(() => {
-    const year = localStorage.getItem('budget_year');
-    return year ? parseInt(year) : new Date().getFullYear();
-  });
-
-  const [budgetMonth, setBudgetMonth] = useState(() => {
-    const month = localStorage.getItem('budget_month');
-    return month ? month : new Date().toLocaleString('default', { month: 'long' });
-  });
+  const [configuredPeriod, setConfiguredPeriod] = useState(getConfiguredBudgetPeriod);
+  const budgetYear = configuredPeriod.year;
+  const budgetMonth = configuredPeriod.month;
   
 
   const smsExpenseModalRef = useRef<HTMLIonModalElement>(null);
@@ -56,6 +51,8 @@ const SmsExpensePage: React.FC = () => {
   const [smsExpenseCollectionRef, setSmsExpenseCollectionRef] = useState<CollectionReference>()
   
   const [presentToast, dismissToast] = useIonToast();
+
+  useIonViewWillEnter(() => setConfiguredPeriod(getConfiguredBudgetPeriod()));
   
 
   // useIonViewWillEnter(() => {
@@ -513,14 +510,7 @@ const SmsExpensePage: React.FC = () => {
           <BudgetSetup 
             selectedYear={budgetYear}
             selectedMonth={budgetMonth}
-            onYearChange={(year) => {
-              localStorage.setItem('budget_year', year.toString());
-              setBudgetYear(year);
-            } }
-            onMonthChange={(month) => {
-              localStorage.setItem('budget_month', month);
-              setBudgetMonth(month);
-            } }
+            editable={false}
           />
 
       </IonHeader>

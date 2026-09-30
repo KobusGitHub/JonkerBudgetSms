@@ -1,0 +1,97 @@
+.budget-period-bar {
+    border-radius: 8px;
+    --background: #ffffff;
+    background: #ffffff;
+    color: #222428;
+}
+
+.budget-period-bar-editable {
+    border: 1px solid #d7d8da;
+}
+
+.budget-period-bar-editable ion-item {
+    min-height: 10px;
+    height: 35px;
+    margin: 2px;
+    border-radius: 8px;
+    --background: #ffffff;
+    --color: #222428;
+}
+
+.budget-period-bar-editable ion-icon {
+    margin-right: 4px;
+    padding-bottom: 10px;
+    color: black;
+    font-size: 14px;
+}
+
+.budget-period-bar-readonly {
+    margin: 8px 0;
+    padding: 4px;
+    background: #ffffff;
+    border: 1px solid #c8d8ee;
+}
+
+.budget-period-bar-readonly ion-item {
+    min-height: 42px;
+    margin: 0;
+    --background: #ffffff;
+    --color: #222428;
+    --border-color: transparent;
+}
+
+.budget-period-readonly-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.budget-period-readonly-field > ion-icon {
+    color: var(--ion-color-medium);
+    font-size: 14px;
+}
+
+.budget-period-readonly-field > div {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-start;
+    gap: 5px;
+    width: 100%;
+}
+
+.budget-period-label {
+    color: var(--ion-color-medium) !important;
+    font-size: 10px !important;
+    font-weight: 500 !important;
+    text-transform: uppercase;
+}
+
+.budget-period-value {
+    color: var(--ion-color-dark) !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+}
+
+.budget-period-remaining-row {
+    border-top: 1px solid rgba(var(--ion-color-primary-rgb), 0.12);
+}
+
+.budget-period-remaining-row ion-col {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 6px;
+    padding: 5px 8px 7px;
+}
+
+.budget-period-value-negative {
+    color: var(--ion-color-danger) !important;
+}
+
+.budget-summary-panel {
+    --background: #ffffff !important;
+    --color: #222428;
+    background: #ffffff !important;
+    color: #222428;
+}

@@ -1,5 +1,5 @@
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonSplitPane, IonMenu, IonRouterOutlet, IonMenuToggle, IonItem, IonDatetime, IonButton, IonIcon, IonFooter, } from '@ionic/react'
-import { cardOutline, chatboxEllipsesOutline, cogOutline, documentTextOutline, homeOutline, layersOutline, newspaperOutline, peopleOutline, pricetagsOutline, swapHorizontalOutline, trendingUpOutline } from 'ionicons/icons'
+import { cardOutline, chatboxEllipsesOutline, cogOutline, documentTextOutline, homeOutline, layersOutline, newspaperOutline, peopleOutline, pricetagsOutline, settingsOutline, swapHorizontalOutline, trendingUpOutline } from 'ionicons/icons'
 import { Redirect, Route } from 'react-router'
 import Details from './Details'
 import Page1 from './Page1'
@@ -17,6 +17,7 @@ import { useAuth } from '../context/AuthContext'
 import BackButtonHandler from './BackButtonHandler'
 import TransferPage from './TransferPage'
 import ExpensePage from './ExpensePage'
+import BudgetSetupPage from './BudgetSetupPage'
 
 const Menu: React.FC = () => {
 
@@ -29,6 +30,7 @@ const Menu: React.FC = () => {
         { name: 'Transfer', url:'/app/transfer', icon: swapHorizontalOutline },
         { name: 'SMS Config', url:'/app/sms-config', icon: cogOutline },
         { name: 'Categories Setup', url:'/app/categories-setup', icon: pricetagsOutline },
+        { name: 'Budget Setup', url:'/app/budget-setup', icon: settingsOutline },
         { name: 'Expense Report', url:'/app/expense-report', icon: documentTextOutline },
         { name: 'Category Group Report', url:'/app/category-group-report', icon: layersOutline },
         { name: 'Forecast', url:'/app/forecast', icon: trendingUpOutline },
@@ -78,6 +80,7 @@ const Menu: React.FC = () => {
                     <Route exact path="/app/sms-expense" component={SmsExpensePage} />
                     <Route exact path="/app/sms-config" component={SmsConfigPage} />
                     <Route exact path="/app/categories-setup" component={CategoriesSetupPage} />
+                    <Route exact path="/app/budget-setup" component={BudgetSetupPage} />
                     <Route exact path="/app/expense-report" component={ExpenseReportPage} />
                     <Route exact path="/app/category-group-report" component={CategoryGroupReportPage} />
                     <Route exact path="/app/forecast" component={ForecastPage} />

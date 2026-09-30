@@ -8,6 +8,7 @@ import { CategoryModel } from '../models/CategoryModel';
 import { ExpenseModel } from '../models/ExpenseModel';
 import { cardOutline, pencilOutline, timeOutline } from 'ionicons/icons';
 import BudgetSetup from './BudgetSetup';
+import { getConfiguredBudgetPeriod } from '../shared/budgetPeriod';
 
 const TransferPage: React.FC = () => {
 
@@ -19,15 +20,9 @@ const TransferPage: React.FC = () => {
     const [isExpensesLoaded, setIsExpensesLoaded] = useState(false);
 
 
-    const [budgetYear, setBudgetYear] = useState(() => {
-        const year = localStorage.getItem('budget_year');
-        return year ? parseInt(year) : new Date().getFullYear();
-    });
-
-    const [budgetMonth, setBudgetMonth] = useState(() => {
-        const month = localStorage.getItem('budget_month');
-        return month ? month : new Date().toLocaleString('default', { month: 'long' });
-    });
+    const [configuredPeriod, setConfiguredPeriod] = useState(getConfiguredBudgetPeriod);
+    const budgetYear = configuredPeriod.year;
+    const budgetMonth = configuredPeriod.month;
 
 
     const [fromCategory, setFromCategory] = useState<CategoryModel>();
@@ -42,6 +37,7 @@ const TransferPage: React.FC = () => {
 
     useIonViewWillEnter(() => {
             resetForm();
+            setConfiguredPeriod(getConfiguredBudgetPeriod());
     });
 
     const resetForm = () => {
@@ -233,14 +229,7 @@ const TransferPage: React.FC = () => {
                 <BudgetSetup 
                     selectedYear={budgetYear}
                     selectedMonth={budgetMonth}
-                    onYearChange={(year) => {
-                        localStorage.setItem('budget_year', year.toString());
-                        setBudgetYear(year);
-                    } }
-                    onMonthChange={(month) => {
-                        localStorage.setItem('budget_month', month);
-                        setBudgetMonth(month);
-                    } }
+                    editable={false}
                 />
             </IonHeader>
             <IonContent className="ion-padding">

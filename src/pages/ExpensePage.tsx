@@ -4,6 +4,7 @@ import { FIREBASE_DB } from '../config/FirebaseConfig';
 import { collection, doc, DocumentData, onSnapshot, orderBy, query, setDoc, where } from 'firebase/firestore';
 import { useAuth } from '../context/AuthContext';
 import { calculateBudgetLeft, currencyFormatter, sortCategories } from '../shared/utils';
+import { getConfiguredBudgetPeriod } from '../shared/budgetPeriod';
 import { CategoryModel } from '../models/CategoryModel';
 import { ExpenseModel } from '../models/ExpenseModel';
 import { cardOutline, pencilOutline, timeOutline } from 'ionicons/icons';
@@ -19,15 +20,9 @@ const ExpensePage: React.FC = () => {
     const [isExpensesLoaded, setIsExpensesLoaded] = useState(false);
 
 
-    const [budgetYear, setBudgetYear] = useState(() => {
-        const year = localStorage.getItem('budget_year');
-        return year ? parseInt(year) : new Date().getFullYear();
-    });
-
-    const [budgetMonth, setBudgetMonth] = useState(() => {
-        const month = localStorage.getItem('budget_month');
-        return month ? month : new Date().toLocaleString('default', { month: 'long' });
-    });
+    const [configuredPeriod, setConfiguredPeriod] = useState(getConfiguredBudgetPeriod);
+    const budgetYear = configuredPeriod.year;
+    const budgetMonth = configuredPeriod.month;
 
 
     const [activeCategory, setActiveCategory] = useState<CategoryModel>();
@@ -42,6 +37,7 @@ const ExpensePage: React.FC = () => {
 
     useIonViewWillEnter(() => {
         resetForm();
+        setConfiguredPeriod(getConfiguredBudgetPeriod());
     });
     
     // Categories
@@ -70,7 +66,7 @@ const ExpensePage: React.FC = () => {
         });
 
         return unsubscribe;
-    }, []);
+    }, [user?.uid]);
 
     // Expenses
     useEffect(() => {
@@ -99,7 +95,7 @@ const ExpensePage: React.FC = () => {
         });
 
         return unsubscribe;
-    }, []);
+    }, [user?.uid, budgetMonth, budgetYear]);
 
 
 
@@ -210,14 +206,7 @@ const ExpensePage: React.FC = () => {
                 <BudgetSetup 
                     selectedYear={budgetYear}
                     selectedMonth={budgetMonth}
-                    onYearChange={(year) => {
-                        localStorage.setItem('budget_year', year.toString());
-                        setBudgetYear(year);
-                    } }
-                    onMonthChange={(month) => {
-                        localStorage.setItem('budget_month', month);
-                        setBudgetMonth(month);
-                    } }
+                    editable={false}
                 />
 
             </IonHeader>

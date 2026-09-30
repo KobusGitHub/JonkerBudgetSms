@@ -1,4 +1,4 @@
-import { IonButtons, IonCheckbox, IonContent, IonFooter, IonHeader, IonItem, IonLabel, IonList, IonMenuButton, IonPage, IonSpinner, IonText, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButtons, IonCheckbox, IonContent, IonFooter, IonHeader, IonItem, IonLabel, IonList, IonMenuButton, IonPage, IonSpinner, IonText, IonTitle, IonToolbar, useIonViewWillEnter } from '@ionic/react';
 import { collection, DocumentData, getDocs, limit, onSnapshot, query, where } from 'firebase/firestore';
 import { useEffect, useMemo, useState } from 'react';
 import { FIREBASE_DB } from '../config/FirebaseConfig';
@@ -7,6 +7,7 @@ import { CategoryModel } from '../models/CategoryModel';
 import { ExpenseModel } from '../models/ExpenseModel';
 import { currencyFormatter, sortCategories } from '../shared/utils';
 import BudgetSetup from './BudgetSetup';
+import { getConfiguredBudgetPeriod } from '../shared/budgetPeriod';
 
 interface ForecastLine {
     guidId: string;
@@ -34,13 +35,11 @@ const SummaryRow: React.FC<{ label: string; value: number; color?: string; bold?
 const ForecastPage: React.FC = () => {
     const { user } = useAuth();
 
-    const [year, setYear] = useState(() => {
-        const stored = localStorage.getItem('budget_year');
-        return stored ? parseInt(stored) : new Date().getFullYear();
-    });
-    const [month, setMonth] = useState(() =>
-        localStorage.getItem('budget_month') ?? new Date().toLocaleString('default', { month: 'long' })
-    );
+    const [configuredPeriod, setConfiguredPeriod] = useState(getConfiguredBudgetPeriod);
+    const year = configuredPeriod.year;
+    const month = configuredPeriod.month;
+
+    useIonViewWillEnter(() => setConfiguredPeriod(getConfiguredBudgetPeriod()));
 
     const [monthlyBudget, setMonthlyBudget] = useState<number | null>(null);
     const [categories, setCategories] = useState<CategoryModel[]>([]);
@@ -146,13 +145,12 @@ const ForecastPage: React.FC = () => {
                 <BudgetSetup
                     selectedYear={year}
                     selectedMonth={month}
-                    onYearChange={setYear}
-                    onMonthChange={setMonth}
+                    editable={false}
                 />
             </IonHeader>
 
             <IonContent className='ion-padding'>
-                <IonItem lines='none' style={summaryStyle}>
+                <IonItem className='budget-summary-panel' lines='none' style={summaryStyle}>
                     <IonLabel>
                         <strong style={{ fontSize: '16px', textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--ion-color-primary)' }}>Forecast</strong>
                         <SummaryRow label='Monthly budget' value={budget} />
