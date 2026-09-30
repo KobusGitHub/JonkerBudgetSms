@@ -3,7 +3,10 @@ import { cardOutline, chatboxEllipsesOutline, cogOutline, documentTextOutline, l
 import { useAuth } from '../context/AuthContext';
 
 const Home: React.FC = () => {
-  const { user } = useAuth();
+  const { user, profile, isAdmin } = useAuth();
+
+  const displayName = profile?.name ? `${profile.name} ${profile.surname ?? ''}`.trim() : '';
+  const welcomeName = displayName || user?.email;
 
   const links = [
     { title: 'SMS Expense', subtitle: 'Link bank SMS messages to categories', url: '/app/sms-expense', icon: chatboxEllipsesOutline },
@@ -14,7 +17,7 @@ const Home: React.FC = () => {
     { title: 'Expense Report', subtitle: 'View all transactions for a month', url: '/app/expense-report', icon: documentTextOutline },
     { title: 'Category Group Report', subtitle: 'Spent vs budget per category', url: '/app/category-group-report', icon: layersOutline },
     { title: 'Forecast', subtitle: 'Forecast what will be left this month', url: '/app/forecast', icon: trendingUpOutline },
-    { title: 'User Management', subtitle: 'Manage users and budgets', url: '/app/user-management', icon: peopleOutline },
+    ...(isAdmin ? [{ title: 'User Management', subtitle: 'Manage users and budgets', url: '/app/user-management', icon: peopleOutline }] : []),
   ];
 
   return (
@@ -29,7 +32,7 @@ const Home: React.FC = () => {
       </IonHeader>
 
       <IonContent fullscreen className='ion-padding'>
-        <h2>Welcome{user?.email ? `, ${user.email}` : ''}</h2>
+        <h2>Welcome{welcomeName ? `, ${welcomeName}` : ''}</h2>
 
         {links.map((link) => (
           <IonCard key={link.url} routerLink={link.url}>

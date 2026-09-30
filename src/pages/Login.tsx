@@ -1,4 +1,4 @@
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, useIonRouter, IonButton, IonInput, useIonLoading, useIonAlert, IonIcon, IonCard, IonCardContent } from '@ionic/react'
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, useIonRouter, IonButton, IonInput, useIonLoading, useIonAlert, IonIcon, IonCard, IonCardContent, IonSpinner } from '@ionic/react'
 import { walletOutline } from 'ionicons/icons';
 import './Login.css';
 import { FirebaseError } from 'firebase/app';
@@ -21,8 +21,9 @@ const Login: React.FC = () => {
     const [ show, hide ] = useIonLoading();
     const [ present, dismiss ] = useIonAlert();
 
-    const { user } = useAuth();
+    const { user, initialized } = useAuth();
     const router = useIonRouter();
+    const checkingSession = !initialized || !!user;
 
     useEffect(() => {
         if(user) {
@@ -109,9 +110,14 @@ const Login: React.FC = () => {
                             <IonIcon icon={walletOutline} />
                         </div>
                         <h1>Jonker Budget</h1>
-                        <p>Sign in to manage your budget</p>
+                        <p>{checkingSession ? 'Checking your session...' : 'Sign in to manage your budget'}</p>
                     </div>
 
+                    {checkingSession ? (
+                        <div style={{ display: 'flex', justifyContent: 'center', padding: '24px' }}>
+                            <IonSpinner name='crescent' color='primary' />
+                        </div>
+                    ) : (
                     <IonCard className='login-card'>
                         <IonCardContent>
                             <form onSubmit={handleSubmit(onLogin)}>
@@ -135,6 +141,7 @@ const Login: React.FC = () => {
                             </form>
                         </IonCardContent>
                     </IonCard>
+                    )}
                 </div>
             </IonContent>
         </IonPage>

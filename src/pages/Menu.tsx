@@ -20,7 +20,7 @@ import ExpensePage from './ExpensePage'
 
 const Menu: React.FC = () => {
 
-    const { logout, user } = useAuth();
+    const { logout, isAdmin } = useAuth();
     
     const paths = [
         { name: 'Home', url:'/app/home', icon: homeOutline },
@@ -32,7 +32,7 @@ const Menu: React.FC = () => {
         { name: 'Expense Report', url:'/app/expense-report', icon: documentTextOutline },
         { name: 'Category Group Report', url:'/app/category-group-report', icon: layersOutline },
         { name: 'Forecast', url:'/app/forecast', icon: trendingUpOutline },
-        { name: 'User Management', url:'/app/user-management', icon: peopleOutline },
+        ...(isAdmin ? [{ name: 'User Management', url:'/app/user-management', icon: peopleOutline }] : []),
     ]
 
  
@@ -81,7 +81,7 @@ const Menu: React.FC = () => {
                     <Route exact path="/app/expense-report" component={ExpenseReportPage} />
                     <Route exact path="/app/category-group-report" component={CategoryGroupReportPage} />
                     <Route exact path="/app/forecast" component={ForecastPage} />
-                    <Route exact path="/app/user-management" component={UserManagementPage} />
+                    <Route exact path="/app/user-management" render={() => isAdmin ? <UserManagementPage /> : <Redirect to="/app/home" />} />
                     <Route exact path="/app/page1" component={Page1} />
                     <Route exact path="/app/page1/details" component={Details} />
                     <Route exact path="/app/page2" component={Page2} />

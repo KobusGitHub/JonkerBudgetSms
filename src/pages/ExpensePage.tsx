@@ -33,6 +33,7 @@ const ExpensePage: React.FC = () => {
     const [activeCategory, setActiveCategory] = useState<CategoryModel>();
     const [filteredExpenses, setFilteredExpenses] = useState<ExpenseModel[]>([]);
     const [amount, setAmount] = useState<number>(0);
+    const [amountText, setAmountText] = useState<string>('');
     const [comment, setComment] = useState<string>('');
 
     const [presentToast, dismissToast] = useIonToast();
@@ -148,6 +149,7 @@ const ExpensePage: React.FC = () => {
 
     const resetForm = () => {
          setAmount(0);
+        setAmountText('');
         setComment('');
         setActiveCategory(undefined);
         setFilteredExpenses([]);
@@ -330,13 +332,15 @@ const ExpensePage: React.FC = () => {
                     <IonInput
                         label="Amount (R)"
                         labelPlacement="floating"
-                        type="number" // Trigger numeric keypad
+                        type="text" // type="number" rejects '.' or ',' depending on device locale
                         placeholder="0.00"
-                        inputmode="decimal" // Allows for decimal point on mobile
-                        value={amount} // Assumes you add 'amount' to your model
+                        inputmode="decimal"
+                        value={amountText}
                         onIonInput={(e) => {
-                            const val = e.detail.value;
-                            setAmount(val ? parseFloat(val) : 0);// Convert string to number
+                            const val = (e.detail.value ?? '').replace(',', '.').replace(/[^0-9.]/g, '');
+                            setAmountText(val);
+                            const parsed = parseFloat(val);
+                            setAmount(isNaN(parsed) ? 0 : parsed);
                         }}
                     />
                 </IonItem>

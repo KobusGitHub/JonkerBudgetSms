@@ -1,10 +1,14 @@
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
 import { Redirect } from "react-router";
-import { FIREBASE_AUTH } from "../config/FirebaseConfig";
+import { FIREBASE_AUTH, FIREBASE_DB } from "../config/FirebaseConfig";
+import { UserModel } from "../models/UserModel";
 
 interface AuthProps {
     user?: User | null;
+    profile?: UserModel | null;
+    isAdmin?: boolean;
     initialized?: boolean;
     logout?: () => Promise<void>;
 }
@@ -18,6 +22,7 @@ export function useAuth() {
 
 export const AuthProvider = ({children}: PropsWithChildren) => {
     const [user, setUser] = useState<User | null>(null);
+    const [profile, setProfile] = useState<UserModel | null>(null);
     const [initialized, setinitialized] = useState<boolean>(false);
 
 
@@ -30,9 +35,25 @@ export const AuthProvider = ({children}: PropsWithChildren) => {
         }) 
     }, [])
 
+    useEffect(() => {
+        const email = user?.email?.toLowerCase();
+        if (!email) {
+            setProfile(null);
+            return;
+        }
+
+        const profileQuery = query(collection(FIREBASE_DB, 'user'), where('email', '==', email));
+        return onSnapshot(profileQuery, (snapshot) => {
+            const d = snapshot.docs[0];
+            setProfile(d ? { ...(d.data() as UserModel), guidId: d.id } : null);
+        }, (error) => console.error('Profile fetch failed:', error));
+    }, [user?.email])
+
 
     const providerValue = {
         user,
+        profile,
+        isAdmin: profile?.isAdmin === true,
         initialized,
         logout: () => signOut(FIREBASE_AUTH)
     }
