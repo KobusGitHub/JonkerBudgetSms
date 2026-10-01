@@ -107,5 +107,5 @@ git push https://KobusGitHub:<YOUR_PERSONAL_TOKEN>@github.com/KobusGitHub/Jonker
 
 
 #build apk
-npm run apk
-npm run apk:release
+pnpm run apk
+pnpm run apk:release

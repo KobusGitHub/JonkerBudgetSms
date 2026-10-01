@@ -39,6 +39,25 @@ $outDir = Join-Path $root 'apk'
 New-Item -ItemType Directory -Force -Path $outDir | Out-Null
 $stamp = Get-Date -Format 'yyyyMMdd-HHmm'
 
+# Read version from environment file
+$envFile = if ($Release -and (Test-Path (Join-Path $root 'src\environments\environment.prod.ts'))) {
+    Join-Path $root 'src\environments\environment.prod.ts'
+} elseif (Test-Path (Join-Path $root 'src\environments\environment.ts')) {
+    Join-Path $root 'src\environments\environment.ts'
+} else {
+    $null
+}
+
+$version = '1.0.0'
+if ($envFile) {
+    $envContent = Get-Content $envFile -Raw
+    if ($envContent -match "version\s*:\s*['""]([^'""]+)['""]") {
+        $version = $Matches[1].Trim()
+    }
+}
+$versionTag = if ($version -match '^v') { $version } else { "v$version" }
+Write-Host "App version: $versionTag" -ForegroundColor Yellow
+
 if ($Release) {
     $keystore = Join-Path $root 'signing\keystore'
     if (-not (Test-Path $keystore)) { throw "Keystore not found at $keystore" }
@@ -61,7 +80,7 @@ if ($Release) {
 
     $apk = Get-ChildItem (Join-Path $root 'android\app\build\outputs\apk\release') -Filter '*.apk' |
         Sort-Object LastWriteTime -Descending | Select-Object -First 1
-    $target = Join-Path $outDir "HomeBudget-release-$stamp.apk"
+    $target = Join-Path $outDir "HomeBudget-$versionTag-release-$stamp.apk"
 } else {
     Push-Location (Join-Path $root 'android')
     try {
@@ -71,7 +90,7 @@ if ($Release) {
     }
 
     $apk = Get-Item (Join-Path $root 'android\app\build\outputs\apk\debug\app-debug.apk')
-    $target = Join-Path $outDir "HomeBudget-debug-$stamp.apk"
+    $target = Join-Path $outDir "HomeBudget-$versionTag-debug-$stamp.apk"
 }
 
 if (-not $apk) { throw 'Build finished but no APK was found.' }
