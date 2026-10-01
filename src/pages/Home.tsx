@@ -3,6 +3,7 @@ import { cardOutline, chatboxEllipsesOutline, cogOutline, documentTextOutline, l
 import { useAuth } from '../context/AuthContext';
 import { useEffect } from 'react';
 import AppFooter from '../components/AppFooter';
+import { environment } from '../environments/environment';
 import './Home.css';
 
 const Home: React.FC = () => {
@@ -27,10 +28,10 @@ const Home: React.FC = () => {
   }, [consumeWelcome, presentToast, profile, user, welcomeName, welcomePending]);
 
   const links = [
-    { title: 'SMS Expense', url: '/app/sms-expense', icon: chatboxEllipsesOutline },
+    ...(environment.smsEnabled ? [{ title: 'SMS Expense', url: '/app/sms-expense', icon: chatboxEllipsesOutline }] : []),
     { title: 'Expense', url: '/app/expense', icon: cardOutline },
     { title: 'Transfer', url: '/app/transfer', icon: swapHorizontalOutline },
-    { title: 'SMS Config', url: '/app/sms-config', icon: cogOutline },
+    ...(environment.smsEnabled ? [{ title: 'SMS Config', url: '/app/sms-config', icon: cogOutline }] : []),
     { title: 'Categories', url: '/app/categories-setup', icon: pricetagsOutline },
     { title: 'Expense Report', url: '/app/expense-report', icon: documentTextOutline },
     { title: 'Category Report', url: '/app/category-group-report', icon: layersOutline },

@@ -15,6 +15,7 @@ import { ExpenseModel } from '../models/ExpenseModel';
 import { sortCategories } from '../shared/utils';
 import { getConfiguredBudgetPeriod } from '../shared/budgetPeriod';
 import AppFooter from '../components/AppFooter';
+import { filterBankMessages } from '../shared/smsIdentifiers';
 
 
 // Using the exact name you found in the Java folders
@@ -37,6 +38,8 @@ const SmsExpensePage: React.FC = () => {
   const [categories, setCategories] = useState<CategoryModel[]>([]);
   const [smsConfig, setSmsConfig] = useState<SmsConfigModel[]>([]);
   const [smsExpenses, setSmsExpenses] = useState<SmsExpenseModel[]>([]);
+  const [smsIdentifiers, setSmsIdentifiers] = useState<string[]>([]);
+  const [areIdentifiersLoaded, setAreIdentifiersLoaded] = useState(false);
 
   const [isCategoryLoaded, setIsCategoryLoaded] = useState(false);
   const [isConfigLoaded, setIsConfigLoaded] = useState(false);
@@ -135,11 +138,25 @@ const SmsExpensePage: React.FC = () => {
 
   }, []);
 
+  useEffect(() => {
+    if (!user?.uid) return;
+
+    const identifiersQuery = query(collection(FIREBASE_DB, 'smsIdentifier'), where('shareToken', '==', user.uid));
+    return onSnapshot(identifiersQuery, snapshot => {
+      setSmsIdentifiers(snapshot.docs.map(identifierDoc => identifierDoc.data().identifier as string));
+      setAreIdentifiersLoaded(true);
+    }, error => {
+      console.error('SMS identifiers fetch failed:', error);
+      setAreIdentifiersLoaded(true);
+      presentToast({ message: 'Could not load custom SMS identifiers', duration: 3000, color: 'warning' });
+    });
+  }, [user?.uid]);
+
   /* SMS INBOX */
   useEffect(() => {
     // Define the async wrapper
     const initData = async () => {
-      if (isCategoryLoaded && isConfigLoaded) {
+      if (isCategoryLoaded && isConfigLoaded && areIdentifiersLoaded) {
         console.log("Both finished! Loading third effect...");
         
         // Now you can safely use await
@@ -149,7 +166,7 @@ const SmsExpensePage: React.FC = () => {
 
     initData();
 
-  }, [isCategoryLoaded, isConfigLoaded]);
+  }, [isCategoryLoaded, isConfigLoaded, areIdentifiersLoaded, smsIdentifiers, smsExpenses]);
 
   /* SMS EXPENSES */
   useEffect(() => {
@@ -184,7 +201,7 @@ const SmsExpensePage: React.FC = () => {
     );
 
     // 3. ON SNAPSHOT: This is the "Live" part that fires when Firebase changes
-    const unsubscribe = onSnapshot(q, async (querySnapshot) => {
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const localSmsExpenses = querySnapshot.docs.map((doc) => ({
         guidId: doc.id,
         ...doc.data()
@@ -194,7 +211,6 @@ const SmsExpensePage: React.FC = () => {
       setSmsExpenses(localSmsExpenses);
 
 
-      await loadMessages(localSmsExpenses); // Refresh messages to reflect any changes
     }, (error) => {
       console.error("Firestore Listener failed:", error);
     });
@@ -230,7 +246,7 @@ const SmsExpensePage: React.FC = () => {
     }));
     console.log('Formatted Messages:', formattedMessages);
 
-    const bankMsgs = filterBankMessages(formattedMessages);
+    const bankMsgs = filterBankMessages(formattedMessages, smsIdentifiers);
     console.log('Bank messages filtered and set.');
 
 
@@ -416,26 +432,6 @@ const SmsExpensePage: React.FC = () => {
   }
 
 
-  const filterBankMessages = (allMessages: MessageModel[]) => {
-
-    const identifiers = [
-    'Absa: CCRD7037', 
-    'Absa: CCRD7029',
-    'Absa: CHEQ6406'
-  ];
-
-
-    // const bankMsgs = allMessages.filter(msg => 
-    //   msg.body.includes('Absa: CCRD7037')
-    // );
-   
-    const bankMsgs =  allMessages.filter(msg => 
-      identifiers.some(term => msg.body.includes(term))
-    );
-
-    return bankMsgs;
-  }
-
   const handleRefresh = async (event: CustomEvent) => {
     console.log('Refreshing data...');
 
@@ -535,6 +531,11 @@ const SmsExpensePage: React.FC = () => {
         </IonHeader>
        <div>
 
+          {areIdentifiersLoaded && smsIdentifiers.length === 0 && (
+            <IonText color="medium">
+              <p className="ion-padding">Add bank message identifiers in SMS Config to show matching messages.</p>
+            </IonText>
+          )}
         
                 
           

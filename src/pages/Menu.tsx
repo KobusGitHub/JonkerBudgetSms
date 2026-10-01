@@ -18,6 +18,7 @@ import BackButtonHandler from './BackButtonHandler'
 import TransferPage from './TransferPage'
 import ExpensePage from './ExpensePage'
 import BudgetSetupPage from './BudgetSetupPage'
+import { environment } from '../environments/environment'
 
 const Menu: React.FC = () => {
 
@@ -25,10 +26,10 @@ const Menu: React.FC = () => {
     
     const paths = [
         { name: 'Home', url:'/app/home', icon: homeOutline },
-        { name: 'SMS Expense', url:'/app/sms-expense', icon: chatboxEllipsesOutline },
+        ...(environment.smsEnabled ? [{ name: 'SMS Expense', url:'/app/sms-expense', icon: chatboxEllipsesOutline }] : []),
         { name: 'Expense', url:'/app/expense', icon: cardOutline },
         { name: 'Transfer', url:'/app/transfer', icon: swapHorizontalOutline },
-        { name: 'SMS Config', url:'/app/sms-config', icon: cogOutline },
+        ...(environment.smsEnabled ? [{ name: 'SMS Config', url:'/app/sms-config', icon: cogOutline }] : []),
         { name: 'Categories Setup', url:'/app/categories-setup', icon: pricetagsOutline },
         { name: 'Budget Setup', url:'/app/budget-setup', icon: settingsOutline },
         { name: 'Expense Report', url:'/app/expense-report', icon: documentTextOutline },
@@ -77,8 +78,8 @@ const Menu: React.FC = () => {
                 
                 <IonRouterOutlet id="main">
                     <Route exact path="/app/home" component={Home} />
-                    <Route exact path="/app/sms-expense" component={SmsExpensePage} />
-                    <Route exact path="/app/sms-config" component={SmsConfigPage} />
+                    <Route exact path="/app/sms-expense" render={() => environment.smsEnabled ? <SmsExpensePage /> : <Redirect to="/app/home" />} />
+                    <Route exact path="/app/sms-config" render={() => environment.smsEnabled ? <SmsConfigPage /> : <Redirect to="/app/home" />} />
                     <Route exact path="/app/categories-setup" component={CategoriesSetupPage} />
                     <Route exact path="/app/budget-setup" component={BudgetSetupPage} />
                     <Route exact path="/app/expense-report" component={ExpenseReportPage} />

@@ -3,12 +3,13 @@ import { addDoc, collection, CollectionReference, deleteDoc, doc, DocumentData, 
 import React, { useEffect, useRef, useState } from 'react';
 import { FIREBASE_DB, FIREBASE_STOREAGE } from '../config/FirebaseConfig';
 import { useAuth } from '../context/AuthContext';
-import { addOutline, basketOutline, closeOutline, personOutline } from 'ionicons/icons';
+import { addOutline, basketOutline, closeOutline, personOutline, trashOutline } from 'ionicons/icons';
 import AppFooter from '../components/AppFooter';
 
 import SmsConfigModal from './SmsConfigModal';
 import { CategoryModel } from '../models/CategoryModel';
 import { SmsConfigModel } from '../models/SmsConfigModel';
+import { SmsIdentifierModel } from '../models/SmsIdentifierModel';
 
 
 
@@ -35,6 +36,9 @@ const SmsConfigPage: React.FC = () => {
 
     const [categories, setCategories] = useState<CategoryModel[]>([]);
     const [smsConfigs, setSmsConfigs] = useState<SmsConfigModel[]>([]);
+    const [smsIdentifiers, setSmsIdentifiers] = useState<SmsIdentifierModel[]>([]);
+    const [newIdentifier, setNewIdentifier] = useState('');
+    const [savingIdentifier, setSavingIdentifier] = useState(false);
     const [smsConfig, setSmsConfig] = useState<SmsConfigModel>({
                                 guidId: '',
                                 categoryGuidId: '',
@@ -119,6 +123,55 @@ const SmsConfigPage: React.FC = () => {
 
     }, []);
 
+
+    useEffect(() => {
+        if (!user?.uid) return;
+
+        const identifiersQuery = query(collection(FIREBASE_DB, 'smsIdentifier'), where('shareToken', '==', user.uid));
+        return onSnapshot(identifiersQuery, snapshot => {
+            setSmsIdentifiers(snapshot.docs.map(identifierDoc => ({
+                guidId: identifierDoc.id,
+                ...identifierDoc.data()
+            })) as SmsIdentifierModel[]);
+        }, error => {
+            console.error('SMS identifiers fetch failed:', error);
+            presentToast({ message: 'Could not load SMS identifiers', duration: 3000, color: 'danger' });
+        });
+    }, [user?.uid]);
+
+    const addIdentifier = async () => {
+        const identifier = newIdentifier.trim();
+        if (!user?.uid || !identifier || savingIdentifier) return;
+
+        if (smsIdentifiers.map(item => item.identifier)
+            .some(existing => existing.toLowerCase() === identifier.toLowerCase())) {
+            presentToast({ message: 'Identifier already exists', duration: 2000, color: 'warning' });
+            return;
+        }
+
+        setSavingIdentifier(true);
+        try {
+            const identifierDoc = doc(collection(FIREBASE_DB, 'smsIdentifier'));
+            await setDoc(identifierDoc, { guidId: identifierDoc.id, identifier, shareToken: user.uid } satisfies SmsIdentifierModel);
+            setNewIdentifier('');
+            presentToast({ message: 'Identifier added', duration: 2000, color: 'success' });
+        } catch (error) {
+            console.error('SMS identifier save failed:', error);
+            presentToast({ message: 'Could not save identifier', duration: 2000, color: 'danger' });
+        } finally {
+            setSavingIdentifier(false);
+        }
+    };
+
+    const removeIdentifier = async (identifier: SmsIdentifierModel) => {
+        try {
+            await deleteDoc(doc(FIREBASE_DB, 'smsIdentifier', identifier.guidId));
+            presentToast({ message: 'Identifier removed', duration: 2000, color: 'success' });
+        } catch (error) {
+            console.error('SMS identifier delete failed:', error);
+            presentToast({ message: 'Could not remove identifier', duration: 2000, color: 'danger' });
+        }
+    };
 
     const openActionSheet = (config: SmsConfigModel) => {
         presentActionSheet({
@@ -283,6 +336,27 @@ const SmsConfigPage: React.FC = () => {
             </IonHeader>
             <IonContent className="ion-padding">
 <div>
+                <section aria-label="Bank message identifiers">
+                    <h2>Bank message identifiers</h2>
+                    <IonList>
+                        {smsIdentifiers.map(item => (
+                            <IonItem key={item.guidId}>
+                                <IonLabel>{item.identifier}</IonLabel>
+                                <IonButton slot="end" fill="clear" color="danger" aria-label={`Remove ${item.identifier}`} onClick={() => removeIdentifier(item)}>
+                                    <IonIcon slot="icon-only" icon={trashOutline} />
+                                </IonButton>
+                            </IonItem>
+                        ))}
+                        <IonItem>
+                            <IonInput label="New identifier" labelPlacement="stacked" placeholder="Text found in bank SMS" value={newIdentifier} onIonInput={event => setNewIdentifier(event.detail.value ?? '')} />
+                            <IonButton slot="end" aria-label="Add identifier" disabled={!newIdentifier.trim() || savingIdentifier} onClick={addIdentifier}>
+                                <IonIcon slot="icon-only" icon={addOutline} />
+                            </IonButton>
+                        </IonItem>
+                    </IonList>
+                </section>
+
+                <h2>Category patterns</h2>
                 {/* Display List */}
                 {smsConfigs.map((smsConfigItem) => (
                     

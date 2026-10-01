@@ -8,6 +8,9 @@ export const normalizeAmountInput = (value: string): string => {
     return isNegative ? `-${amount}` : amount;
 };
 
+export const toggleAmountSign = (value: string): string =>
+    value.startsWith('-') ? value.slice(1) : `-${value}`;
+
 export const sortCategories = (categories: CategoryModel[]): CategoryModel[] => {
     return [...categories].sort((a: any, b: any) => {
           // 1. Primary Sort: isFavourite (true first)

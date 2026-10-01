@@ -1,5 +1,22 @@
 apply plugin: 'com.android.application'
 
+def environmentFile = rootProject.file('../src/environments/environment.ts')
+def versionMatch = environmentFile.text =~ /version\s*:\s*['"](\d+)\.(\d+)\.(\d+)['"]/
+if (!versionMatch.find()) {
+    throw new GradleException("Expected a numeric major.minor.patch version in ${environmentFile}")
+}
+def appVersionName = "${versionMatch.group(1)}.${versionMatch.group(2)}.${versionMatch.group(3)}"
+def majorVersion = versionMatch.group(1).toInteger()
+def minorVersion = versionMatch.group(2).toInteger()
+def patchVersion = versionMatch.group(3).toInteger()
+if (minorVersion > 99 || patchVersion > 99) {
+    throw new GradleException('App version minor and patch numbers must be below 100')
+}
+def appVersionCode = majorVersion * 10000L + minorVersion * 100L + patchVersion
+if (appVersionCode > 2100000000L) {
+    throw new GradleException('App version exceeds the Android versionCode limit')
+}
+
 android {
     namespace "io.ionic.starter"
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -7,8 +24,8 @@ android {
         applicationId "io.ionic.starter"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 10000
-        versionName "1.0.0"
+        versionCode appVersionCode.toInteger()
+        versionName appVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.

@@ -39,22 +39,12 @@ $outDir = Join-Path $root 'apk'
 New-Item -ItemType Directory -Force -Path $outDir | Out-Null
 $stamp = Get-Date -Format 'yyyyMMdd-HHmm'
 
-# Read version from environment file
-$envFile = if ($Release -and (Test-Path (Join-Path $root 'src\environments\environment.prod.ts'))) {
-    Join-Path $root 'src\environments\environment.prod.ts'
-} elseif (Test-Path (Join-Path $root 'src\environments\environment.ts')) {
-    Join-Path $root 'src\environments\environment.ts'
-} else {
-    $null
+$envFile = Join-Path $root 'src\environments\environment.ts'
+$envContent = Get-Content $envFile -Raw
+if ($envContent -notmatch "version\s*:\s*['""](\d+\.\d+\.\d+)['""]") {
+    throw "Expected a numeric major.minor.patch version in $envFile"
 }
-
-$version = '1.0.0'
-if ($envFile) {
-    $envContent = Get-Content $envFile -Raw
-    if ($envContent -match "version\s*:\s*['""]([^'""]+)['""]") {
-        $version = $Matches[1].Trim()
-    }
-}
+$version = $Matches[1]
 $versionTag = if ($version -match '^v') { $version } else { "v$version" }
 Write-Host "App version: $versionTag" -ForegroundColor Yellow
 

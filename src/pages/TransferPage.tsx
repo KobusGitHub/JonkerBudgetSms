@@ -3,13 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { FIREBASE_DB } from '../config/FirebaseConfig';
 import { collection, doc, DocumentData, onSnapshot, orderBy, query, setDoc, where } from 'firebase/firestore';
 import { useAuth } from '../context/AuthContext';
-import { calculateBudgetLeft, currencyFormatter, normalizeAmountInput, sortCategories } from '../shared/utils';
+import { calculateBudgetLeft, currencyFormatter, normalizeAmountInput, sortCategories, toggleAmountSign } from '../shared/utils';
 import { CategoryModel } from '../models/CategoryModel';
 import { ExpenseModel } from '../models/ExpenseModel';
 import { cardOutline, pencilOutline, timeOutline } from 'ionicons/icons';
 import BudgetSetup from './BudgetSetup';
 import { getConfiguredBudgetPeriod } from '../shared/budgetPeriod';
 import { AppFooterText } from '../components/AppFooter';
+import './amount-sign.css';
 
 const TransferPage: React.FC = () => {
 
@@ -467,6 +468,13 @@ const TransferPage: React.FC = () => {
                             setAmount(isNaN(parsed) ? 0 : parsed);
                         }}
                     />
+                    <IonButton slot="end" className="amount-sign-toggle" fill="outline" color="primary" aria-label={amountText.startsWith('-') ? 'Make amount positive' : 'Make amount negative'} title="Change sign" onClick={() => {
+                        const nextValue = toggleAmountSign(amountText);
+                        setAmountText(nextValue);
+                        setAmount(parseFloat(nextValue) || 0);
+                    }}>
+                        {amountText.startsWith('-') ? '+' : '-'}
+                    </IonButton>
                 </IonItem>
 
                 {/* Comment */}

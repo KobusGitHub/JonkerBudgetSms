@@ -104,8 +104,14 @@ origin  https://github.com/KobusGitHub/JonkerBudgetSms.git (push)
 git push https://KobusGitHub:<YOUR_PERSONAL_TOKEN>@github.com/KobusGitHub/JonkerBudgetSms.git main
 
 
+#browser
+pnpm run dev
 
 
 #build apk
 pnpm run apk
 pnpm run apk:release
+
+
+#Hosting
+pnpm run deploy:hosting

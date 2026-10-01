@@ -14,7 +14,8 @@
     "build-qa": "ionic cap build android --c qa --env.qa",
     "build-prod": "ionic cap build android --c production --env.prod",
     "apk": "powershell -ExecutionPolicy Bypass -File ./build-apk.ps1",
-    "apk:release": "powershell -ExecutionPolicy Bypass -File ./build-apk.ps1 -Release"
+    "apk:release": "powershell -ExecutionPolicy Bypass -File ./build-apk.ps1 -Release",
+    "deploy:hosting": "powershell -ExecutionPolicy Bypass -File ./deploy-firebase.ps1"
   },
   "dependencies": {
     "@capacitor/android": "^7.4.2",
@@ -52,6 +53,7 @@
     "cypress": "^12.7.0",
     "eslint": "^8.35.0",
     "eslint-plugin-react": "^7.32.2",
+    "firebase-tools": "^15.32.0",
     "jsdom": "^21.1.0",
     "terser": "^5.44.1",
     "typescript": "^5.9.3",
