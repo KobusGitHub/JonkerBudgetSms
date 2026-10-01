@@ -54,7 +54,7 @@ const Menu: React.FC = () => {
                     <IonContent>
 
                         {paths.map((item, index) => (
-                           <IonMenuToggle key={index}>
+                           <IonMenuToggle key={index} autoHide={false}>
                                 <IonItem routerLink={item.url} >
                                     <IonIcon icon={item.icon} slot="start"></IonIcon>
                                     {item.name}
