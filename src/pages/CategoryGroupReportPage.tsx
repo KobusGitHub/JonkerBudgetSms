@@ -1,4 +1,4 @@
-import { IonButton, IonButtons, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonItem, IonLabel, IonList, IonMenuButton, IonModal, IonNote, IonPage, IonProgressBar, IonRow, IonSpinner, IonText, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonItem, IonLabel, IonList, IonMenuButton, IonModal, IonNote, IonPage, IonProgressBar, IonRow, IonSpinner, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { collection, DocumentData, onSnapshot, query, where } from 'firebase/firestore';
 import { useEffect, useMemo, useState } from 'react';
 import { FIREBASE_DB } from '../config/FirebaseConfig';
@@ -8,6 +8,7 @@ import { ExpenseModel } from '../models/ExpenseModel';
 import { currencyFormatter, sortCategories } from '../shared/utils';
 import BudgetSetup from './BudgetSetup';
 import { getConfiguredBudgetPeriod } from '../shared/budgetPeriod';
+import AppFooter from '../components/AppFooter';
 
 interface CategoryGroup {
     guidId: string;
@@ -229,13 +230,7 @@ const CategoryGroupReportPage: React.FC = () => {
                 </IonContent>
             </IonModal>
 
-            <IonFooter style={{ height: '24px' }}>
-                <IonToolbar>
-                    <div style={{ paddingBottom: ' 30px', height: '24px', lineHeight: '24px', fontSize: '12px', paddingRight: '16px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', width: '100%', color: '#6b7dba' }}>
-                        Home Budget
-                    </div>
-                </IonToolbar>
-            </IonFooter>
+            <AppFooter />
         </IonPage>
     );
 };

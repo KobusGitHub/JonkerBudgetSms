@@ -1,4 +1,4 @@
-import { IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonFooter, IonHeader, IonIcon, IonMenuButton, IonPage, IonRefresher, IonRefresherContent, IonText, IonTitle, IonToolbar, useIonRouter, useIonToast, useIonViewWillEnter } from '@ionic/react';
+import { IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonHeader, IonIcon, IonMenuButton, IonPage, IonRefresher, IonRefresherContent, IonText, IonTitle, IonToolbar, useIonRouter, useIonToast, useIonViewWillEnter } from '@ionic/react';
 import { Capacitor, registerPlugin } from '@capacitor/core';
 import { useEffect, useRef, useState } from 'react';
 import { barcodeOutline, cardOutline, checkmarkCircleOutline, checkmarkDoneCircleOutline, clipboardOutline, closeCircleOutline, link, personOutline, timeOutline } from 'ionicons/icons';
@@ -14,6 +14,7 @@ import BudgetSetup from './BudgetSetup';
 import { ExpenseModel } from '../models/ExpenseModel';
 import { sortCategories } from '../shared/utils';
 import { getConfiguredBudgetPeriod } from '../shared/budgetPeriod';
+import AppFooter from '../components/AppFooter';
 
 
 // Using the exact name you found in the Java folders
@@ -627,13 +628,7 @@ const SmsExpensePage: React.FC = () => {
 
       </IonContent>
 
-      <IonFooter style={{ height: '24px' }}>
-        <IonToolbar>
-          <div style={{ paddingBottom:' 30px', height: '24px', lineHeight: '24px', fontSize: '12px', paddingRight: '16px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end',  width: '100%', color: '#6b7dba' }}>
-            Home Budget
-          </div>
-        </IonToolbar>
-      </IonFooter>
+      <AppFooter />
 
     </IonPage>
   );

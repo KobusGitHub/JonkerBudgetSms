@@ -1,4 +1,4 @@
-import { IonButtons, IonContent, IonFooter, IonHeader, IonItem, IonLabel, IonList, IonMenuButton, IonNote, IonPage, IonSpinner, IonText, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButtons, IonContent, IonHeader, IonItem, IonLabel, IonList, IonMenuButton, IonNote, IonPage, IonSpinner, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { collection, DocumentData, onSnapshot, query, where } from 'firebase/firestore';
 import { useEffect, useMemo, useState } from 'react';
 import { FIREBASE_DB } from '../config/FirebaseConfig';
@@ -8,6 +8,7 @@ import { ExpenseModel } from '../models/ExpenseModel';
 import { currencyFormatter } from '../shared/utils';
 import BudgetSetup from './BudgetSetup';
 import { getConfiguredBudgetPeriod } from '../shared/budgetPeriod';
+import AppFooter from '../components/AppFooter';
 
 const ExpenseReportPage: React.FC = () => {
     const { user } = useAuth();
@@ -125,13 +126,7 @@ const ExpenseReportPage: React.FC = () => {
                 )}
             </IonContent>
 
-            <IonFooter style={{ height: '24px' }}>
-                <IonToolbar>
-                    <div style={{ paddingBottom: ' 30px', height: '24px', lineHeight: '24px', fontSize: '12px', paddingRight: '16px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', width: '100%', color: '#6b7dba' }}>
-                        Home Budget
-                    </div>
-                </IonToolbar>
-            </IonFooter>
+            <AppFooter />
         </IonPage>
     );
 };

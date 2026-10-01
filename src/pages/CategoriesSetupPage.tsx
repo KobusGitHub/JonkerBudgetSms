@@ -1,4 +1,4 @@
-import { IonButton, IonButtons, IonCard, IonCardHeader, IonCardSubtitle, IonCheckbox, IonContent, IonFab, IonFabButton, IonFooter, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonMenuButton, IonModal, IonPage, IonSpinner, IonText, IonTitle, IonToggle, IonToolbar, useIonActionSheet, useIonAlert, useIonToast } from '@ionic/react';
+import { IonButton, IonButtons, IonCard, IonCardHeader, IonCardSubtitle, IonCheckbox, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonMenuButton, IonModal, IonPage, IonSpinner, IonText, IonTitle, IonToggle, IonToolbar, useIonActionSheet, useIonAlert, useIonToast } from '@ionic/react';
 import { collection, doc, DocumentData, getDocs, onSnapshot, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { addOutline, barChartOutline, closeOutline, createOutline, pricetagOutline, star, trashOutline } from 'ionicons/icons';
@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthContext';
 import { CategoryModel } from '../models/CategoryModel';
 import { ExpenseModel } from '../models/ExpenseModel';
 import { currencyFormatter, normalizeAmountInput, sortCategories } from '../shared/utils';
+import AppFooter from '../components/AppFooter';
 import './CategoriesSetupPage.css';
 
 const MONTHS = [
@@ -341,13 +342,7 @@ const CategoriesSetupPage: React.FC = () => {
                 </IonFab>
             </IonContent>
 
-            <IonFooter style={{ height: '24px' }}>
-                <IonToolbar>
-                    <div style={{ paddingBottom: ' 30px', height: '24px', lineHeight: '24px', fontSize: '12px', paddingRight: '16px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', width: '100%', color: '#6b7dba' }}>
-                        Home Budget
-                    </div>
-                </IonToolbar>
-            </IonFooter>
+            <AppFooter />
         </IonPage>
     );
 };

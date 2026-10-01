@@ -1,4 +1,4 @@
-import { IonButtons, IonCheckbox, IonContent, IonFooter, IonHeader, IonItem, IonLabel, IonList, IonMenuButton, IonPage, IonSpinner, IonText, IonTitle, IonToolbar, useIonViewWillEnter } from '@ionic/react';
+import { IonButtons, IonCheckbox, IonContent, IonHeader, IonItem, IonLabel, IonList, IonMenuButton, IonPage, IonSpinner, IonText, IonTitle, IonToolbar, useIonViewWillEnter } from '@ionic/react';
 import { collection, DocumentData, getDocs, limit, onSnapshot, query, where } from 'firebase/firestore';
 import { useEffect, useMemo, useState } from 'react';
 import { FIREBASE_DB } from '../config/FirebaseConfig';
@@ -8,6 +8,7 @@ import { ExpenseModel } from '../models/ExpenseModel';
 import { currencyFormatter, sortCategories } from '../shared/utils';
 import BudgetSetup from './BudgetSetup';
 import { getConfiguredBudgetPeriod } from '../shared/budgetPeriod';
+import AppFooter from '../components/AppFooter';
 
 interface ForecastLine {
     guidId: string;
@@ -17,13 +18,16 @@ interface ForecastLine {
     remaining: number;
 }
 
-const summaryStyle = {
+const summaryStyle: React.CSSProperties = {
     '--background': 'rgba(var(--ion-color-primary-rgb), 0.08)',
     borderLeft: '4px solid var(--ion-color-primary)',
     borderRadius: '8px',
     marginBottom: '12px',
-    boxShadow: '0 1px 4px rgba(0, 0, 0, 0.12)'
-};
+    boxShadow: '0 1px 4px rgba(0, 0, 0, 0.12)',
+    position: 'sticky',
+    top: 0,
+    zIndex: 10
+} as React.CSSProperties;
 
 const SummaryRow: React.FC<{ label: string; value: number; color?: string; bold?: boolean }> = ({ label, value, color, bold }) => (
     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: bold ? '15px' : '13px', fontWeight: bold ? 600 : 400, marginTop: '4px' }}>
@@ -188,13 +192,7 @@ const ForecastPage: React.FC = () => {
                 )}
             </IonContent>
 
-            <IonFooter style={{ height: '24px' }}>
-                <IonToolbar>
-                    <div style={{ paddingBottom: ' 30px', height: '24px', lineHeight: '24px', fontSize: '12px', paddingRight: '16px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', width: '100%', color: '#6b7dba' }}>
-                        Home Budget
-                    </div>
-                </IonToolbar>
-            </IonFooter>
+            <AppFooter />
         </IonPage>
     );
 };

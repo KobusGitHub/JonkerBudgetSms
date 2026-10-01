@@ -1,7 +1,8 @@
-import { IonButtons, IonButton, IonContent, IonFooter, IonHeader, IonIcon, IonMenuButton, IonPage, IonTitle, IonToolbar, useIonToast } from '@ionic/react';
+import { IonButtons, IonButton, IonContent, IonHeader, IonIcon, IonMenuButton, IonPage, IonTitle, IonToolbar, useIonToast } from '@ionic/react';
 import { cardOutline, chatboxEllipsesOutline, cogOutline, documentTextOutline, layersOutline, peopleOutline, pricetagsOutline, swapHorizontalOutline, trendingUpOutline } from 'ionicons/icons';
 import { useAuth } from '../context/AuthContext';
 import { useEffect } from 'react';
+import AppFooter from '../components/AppFooter';
 import './Home.css';
 
 const Home: React.FC = () => {
@@ -61,13 +62,7 @@ const Home: React.FC = () => {
         </div>
       </IonContent>
 
-      <IonFooter style={{ height: '24px' }}>
-        <IonToolbar>
-          <div style={{ paddingBottom:' 30px', height: '24px', lineHeight: '24px', fontSize: '12px', paddingRight: '16px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end',  width: '100%', color: '#6b7dba' }}>
-            Home Budget
-          </div>
-        </IonToolbar>
-      </IonFooter>
+      <AppFooter />
     </IonPage>
   );
 };

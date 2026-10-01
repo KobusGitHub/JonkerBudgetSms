@@ -9,6 +9,7 @@ import { CategoryModel } from '../models/CategoryModel';
 import { ExpenseModel } from '../models/ExpenseModel';
 import { cardOutline, pencilOutline, timeOutline } from 'ionicons/icons';
 import BudgetSetup from './BudgetSetup';
+import { AppFooterText } from '../components/AppFooter';
 
 const ExpensePage: React.FC = () => {
 
@@ -355,30 +356,19 @@ const ExpensePage: React.FC = () => {
 
             </IonContent>
 
-            {/* <IonFooter style={{ height: '24px' }}>
-                <IonToolbar>
-                    <div style={{ paddingBottom:' 30px', height: '24px', lineHeight: '24px', fontSize: '12px', paddingRight: '16px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end',  width: '100%', color: '#6b7dba' }}>
-                    Home Budget
-                    </div>
-                </IonToolbar>
-            </IonFooter> */}
-
-
             <IonFooter>
                 <IonToolbar>
-                    <IonGrid>
+                    <IonGrid className="ion-no-padding">
                     <IonRow>
-                        <IonCol>
-                        <IonButton expand='block' onClick={saveExpense}>
+                        <IonCol style={{ padding: '4px 8px 0' }}>
+                        <IonButton expand='block' onClick={saveExpense} style={{ margin: 0 }}>
                             Save Expense
                         </IonButton> 
                         </IonCol>
                     </IonRow>
                     <IonRow>
                         <IonCol>
-                            <div style={{ paddingBottom:' 30px', height: '24px', lineHeight: '24px', fontSize: '12px', paddingRight: '16px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end',  width: '100%', color: '#6b7dba' }}>
-                        Home Budget
-                        </div>
+                            <AppFooterText />
                         </IonCol>
                     </IonRow>
                     </IonGrid>

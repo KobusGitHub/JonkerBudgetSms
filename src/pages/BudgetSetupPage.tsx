@@ -1,4 +1,4 @@
-import { IonButton, IonButtons, IonContent, IonFooter, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonMenuButton, IonPage, IonSelect, IonSelectOption, IonText, IonTitle, IonToolbar, useIonToast } from '@ionic/react';
+import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonMenuButton, IonPage, IonSelect, IonSelectOption, IonText, IonTitle, IonToolbar, useIonToast } from '@ionic/react';
 import { doc, updateDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { walletOutline } from 'ionicons/icons';
@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthContext';
 import './BudgetSetupPage.css';
 import { getConfiguredBudgetPeriod, MONTHS, saveConfiguredBudgetPeriod } from '../shared/budgetPeriod';
 import { normalizeAmountInput } from '../shared/utils';
+import AppFooter from '../components/AppFooter';
 
 const BudgetSetupPage: React.FC = () => {
     const { profile } = useAuth();
@@ -105,11 +106,7 @@ const BudgetSetupPage: React.FC = () => {
                 </IonItem>
             </IonContent>
 
-            <IonFooter style={{ height: '24px' }}>
-                <IonToolbar>
-                    <div className='app-footer-label'>Home Budget</div>
-                </IonToolbar>
-            </IonFooter>
+            <AppFooter />
         </IonPage>
     );
 };

@@ -1,4 +1,4 @@
-import { IonBadge, IonButton, IonButtons, IonCard, IonCardHeader, IonContent, IonFab, IonFabButton, IonFooter, IonHeader, IonIcon, IonInput, IonItem, IonMenuButton, IonModal, IonPage, IonText, IonTitle, IonToggle, IonToolbar, useIonActionSheet, useIonAlert, useIonToast } from '@ionic/react';
+import { IonBadge, IonButton, IonButtons, IonCard, IonCardHeader, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonInput, IonItem, IonMenuButton, IonModal, IonPage, IonText, IonTitle, IonToggle, IonToolbar, useIonActionSheet, useIonAlert, useIonToast } from '@ionic/react';
 import { collection, deleteDoc, doc, DocumentData, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { useEffect, useState } from 'react';
@@ -6,6 +6,7 @@ import { addOutline, closeOutline, createOutline, keyOutline, personCircleOutlin
 import { FIREBASE_AUTH, FIREBASE_DB } from '../config/FirebaseConfig';
 import { useAuth } from '../context/AuthContext';
 import { UserModel } from '../models/UserModel';
+import AppFooter from '../components/AppFooter';
 import './CategoriesSetupPage.css';
 
 const emptyUser: UserModel = {
@@ -266,13 +267,7 @@ const UserManagementPage: React.FC = () => {
                 )}
             </IonContent>
 
-            <IonFooter style={{ height: '24px' }}>
-                <IonToolbar>
-                    <div style={{ paddingBottom: ' 30px', height: '24px', lineHeight: '24px', fontSize: '12px', paddingRight: '16px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', width: '100%', color: '#6b7dba' }}>
-                        Home Budget
-                    </div>
-                </IonToolbar>
-            </IonFooter>
+            <AppFooter />
         </IonPage>
     );
 };

@@ -1,9 +1,10 @@
-import { IonGrid, IonRow, IonCol, IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonModal, IonPage, IonSelect, IonSelectOption, IonTitle, IonToast, IonToolbar, useIonActionSheet, useIonAlert, useIonLoading, useIonToast, IonMenuButton, IonFooter, IonCard, IonCardHeader, IonCardSubtitle, IonCardContent, IonText } from '@ionic/react';
+import { IonGrid, IonRow, IonCol, IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonModal, IonPage, IonSelect, IonSelectOption, IonTitle, IonToast, IonToolbar, useIonActionSheet, useIonAlert, useIonLoading, useIonToast, IonMenuButton, IonCard, IonCardHeader, IonCardSubtitle, IonCardContent, IonText } from '@ionic/react';
 import { addDoc, collection, CollectionReference, deleteDoc, doc, DocumentData, onSnapshot, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import React, { useEffect, useRef, useState } from 'react';
 import { FIREBASE_DB, FIREBASE_STOREAGE } from '../config/FirebaseConfig';
 import { useAuth } from '../context/AuthContext';
 import { addOutline, basketOutline, closeOutline, personOutline } from 'ionicons/icons';
+import AppFooter from '../components/AppFooter';
 
 import SmsConfigModal from './SmsConfigModal';
 import { CategoryModel } from '../models/CategoryModel';
@@ -337,14 +338,7 @@ const SmsConfigPage: React.FC = () => {
                </IonFab>
             </IonContent>
 
-            
-            <IonFooter style={{ height: '24px' }}>
-                <IonToolbar>
-                    <div style={{ paddingBottom:' 30px', height: '24px', lineHeight: '24px', fontSize: '12px', paddingRight: '16px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end',  width: '100%', color: '#6b7dba' }}>
-                    Home Budget
-                    </div>
-                </IonToolbar>
-            </IonFooter>
+            <AppFooter />
         </IonPage>
     );
 };

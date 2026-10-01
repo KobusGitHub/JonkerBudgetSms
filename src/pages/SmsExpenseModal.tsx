@@ -23,6 +23,7 @@ import { FIREBASE_DB } from '../config/FirebaseConfig';
 import { useAuth } from '../context/AuthContext';
 import { ExpenseModel } from '../models/ExpenseModel';
 import BudgetSetup from './BudgetSetup';
+import { AppFooterText } from '../components/AppFooter';
 import { calculateBudgetLeft, currencyFormatter, normalizeAmountInput } from '../shared/utils';
 
 interface Props {
@@ -449,37 +450,24 @@ const SmsExpenseModal: React.FC<Props> = ({
         
       </IonContent>
 
-       {/* <IonFooter style={{ height: '24px' }}>
-            <IonToolbar>
-              
-                <div style={{ paddingBottom:' 30px', height: '24px', lineHeight: '24px', fontSize: '12px', paddingRight: '16px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end',  width: '100%', color: '#6b7dba' }}>
-                Home Budget
-                </div>
-            </IonToolbar>
-        </IonFooter> */}
-
-
-
          <IonFooter>
             <IonToolbar>
-               <IonGrid>
+               <IonGrid className="ion-no-padding">
                 <IonRow>
-                  <IonCol size="6">
-                    <IonButton expand='block' color={'secondary'} onClick={markCompleted}>
+                  <IonCol size="6" style={{ padding: '4px 4px 0 8px' }}>
+                    <IonButton expand='block' color={'secondary'} onClick={markCompleted} style={{ margin: 0 }}>
                         Mark Completed
                     </IonButton> 
                   </IonCol>
-                  <IonCol size="6">
-                      <IonButton expand='block' onClick={saveExpense}>
+                  <IonCol size="6" style={{ padding: '4px 8px 0 4px' }}>
+                      <IonButton expand='block' onClick={saveExpense} style={{ margin: 0 }}>
                         Save Expense
                       </IonButton> 
                   </IonCol>
                 </IonRow>
                 <IonRow>
                   <IonCol>
-                     <div style={{ paddingBottom:' 30px', height: '24px', lineHeight: '24px', fontSize: '12px', paddingRight: '16px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end',  width: '100%', color: '#6b7dba' }}>
-                    Home Budget
-                    </div>
+                     <AppFooterText />
                   </IonCol>
                 </IonRow>
               </IonGrid>
