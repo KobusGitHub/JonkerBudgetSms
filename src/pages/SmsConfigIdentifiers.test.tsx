@@ -14,7 +14,16 @@ vi.mock('firebase/firestore', () => ({
   query: (reference: unknown) => reference,
   where: () => ({}),
   onSnapshot: (reference: { name: string }, callback: (snapshot: { docs: unknown[] }) => void) => {
-    callback({ docs: reference.name === 'smsIdentifier' ? [{ id: 'saved-id', data: () => ({ identifier: 'Saved bank:', shareToken: 'test-user' }) }] : [] });
+    const docs = reference.name === 'smsIdentifier' ? [
+      { id: 'zulu-id', data: () => ({ identifier: 'zulu bank:', shareToken: 'test-user' }) },
+      { id: 'saved-id', data: () => ({ identifier: 'Saved bank:', shareToken: 'test-user' }) },
+      { id: 'alpha-id', data: () => ({ identifier: 'alpha bank:', shareToken: 'test-user' }) },
+    ] : reference.name === 'smsConfig' ? [
+      { id: 'travel-id', data: () => ({ categoryName: 'travel', searchPattern: 'Travel pattern' }) },
+      { id: 'food-id', data: () => ({ categoryName: 'Food', searchPattern: 'Food pattern' }) },
+      { id: 'bills-id', data: () => ({ categoryName: 'bills', searchPattern: 'Bills pattern' }) },
+    ] : [];
+    callback({ docs });
     return () => {};
   },
   doc: (reference: { name?: string }, id?: string, documentId?: string) => ({ path: documentId ? id : reference.name, id: documentId ?? id ?? 'new-id' }),
@@ -25,6 +34,20 @@ vi.mock('firebase/firestore', () => ({
 beforeEach(() => {
   saveIdentifier.mockReset().mockResolvedValue(undefined);
   removeIdentifier.mockReset().mockResolvedValue(undefined);
+});
+
+test('orders identifiers alphabetically regardless of case', () => {
+  const { container } = render(<SmsConfigPage />);
+  const labels = container.querySelectorAll('section[aria-label="Bank message identifiers"] ion-label');
+
+  expect(Array.from(labels, label => label.textContent)).toEqual(['alpha bank:', 'Saved bank:', 'zulu bank:']);
+});
+
+test('orders category patterns alphabetically by category name regardless of case', () => {
+  const { container } = render(<SmsConfigPage />);
+  const categories = container.querySelectorAll('ion-card-subtitle');
+
+  expect(Array.from(categories, category => category.textContent)).toEqual(['bills', 'Food', 'travel']);
 });
 
 test('saves a new identifier in its own user-scoped collection', async () => {

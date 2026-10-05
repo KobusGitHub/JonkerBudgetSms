@@ -1,4 +1,5 @@
-import { IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonItem, IonLabel, IonList, IonMenuButton, IonModal, IonNote, IonPage, IonProgressBar, IonRow, IonSpinner, IonText, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonMenuButton, IonModal, IonNote, IonPage, IonProgressBar, IonRow, IonSpinner, IonText, IonTitle, IonToolbar } from '@ionic/react';
+import { closeOutline } from 'ionicons/icons';
 import { collection, DocumentData, onSnapshot, query, where } from 'firebase/firestore';
 import { useEffect, useMemo, useState } from 'react';
 import { FIREBASE_DB } from '../config/FirebaseConfig';
@@ -192,10 +193,12 @@ const CategoryGroupReportPage: React.FC = () => {
             <IonModal isOpen={selectedGroup !== null} onDidDismiss={() => setSelectedGroup(null)}>
                 <IonHeader>
                     <IonToolbar color='primary'>
-                        <IonTitle>{selectedGroup?.categoryName ?? 'Transactions'}</IonTitle>
-                        <IonButtons slot='end'>
-                            <IonButton onClick={() => setSelectedGroup(null)}>Close</IonButton>
+                        <IonButtons slot='start'>
+                            <IonButton aria-label='Close' onClick={() => setSelectedGroup(null)}>
+                                <IonIcon slot='icon-only' icon={closeOutline} />
+                            </IonButton>
                         </IonButtons>
+                        <IonTitle>{selectedGroup?.categoryName ?? 'Transactions'}</IonTitle>
                     </IonToolbar>
                 </IonHeader>
                 <IonContent className='ion-padding'>

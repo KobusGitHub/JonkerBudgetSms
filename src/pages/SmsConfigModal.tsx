@@ -17,6 +17,7 @@ interface Props {
   isOpen: boolean; // Control visibility from parent if not using trigger
   modalRef: React.RefObject<HTMLIonModalElement>;
   categories: CategoryModel[];
+  smsConfigs: SmsConfigModel[];
   smsConfig: SmsConfigModel;
   setSmsConfig: React.Dispatch<React.SetStateAction<SmsConfigModel>>;
   onDismiss: (event: CustomEvent) => void;
@@ -25,6 +26,7 @@ interface Props {
 const SmsConfigModal: React.FC<Props> = ({ 
   modalRef, 
   categories, 
+  smsConfigs,
   smsConfig, 
   setSmsConfig, 
   onDismiss 
@@ -61,11 +63,15 @@ const SmsConfigModal: React.FC<Props> = ({
               const selectedGuid = e.detail.value as string;
               const selectedCategory = categories.find(c => c.guidId === selectedGuid);
               if (selectedCategory) {
-                setSmsConfig(prev => ({
-                  ...prev,
-                  categoryGuidId: selectedCategory.guidId,
-                  categoryName: selectedCategory.categoryName
-                }));
+                setSmsConfig(prev => {
+                  if (prev.categoryGuidId === selectedGuid) return prev;
+                  const existingConfig = smsConfigs.find(config => config.categoryGuidId === selectedGuid);
+                  return {
+                    ...(existingConfig ?? { ...prev, guidId: '', searchPattern: '' }),
+                    categoryGuidId: selectedCategory.guidId,
+                    categoryName: selectedCategory.categoryName
+                  };
+                });
               }
             }}
           >

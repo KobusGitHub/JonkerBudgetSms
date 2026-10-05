@@ -174,12 +174,14 @@ const ForecastPage: React.FC = () => {
                         {lines.map(l => {
                             const checked = !unchecked.has(l.guidId);
                             return (
-                                <IonItem key={l.guidId} button detail={false} onClick={() => toggleLine(l.guidId)}>
-                                    <IonCheckbox slot='start' checked={checked} style={{ pointerEvents: 'none' }} aria-label={`Include ${l.categoryName}`} />
+                                <IonItem key={l.guidId} button detail={false} style={{ '--padding-start': '4px' } as React.CSSProperties} onClick={() => toggleLine(l.guidId)}>
+                                    <IonCheckbox slot='start' checked={checked} style={{ pointerEvents: 'none', marginInlineStart: 0, marginInlineEnd: '12px' }} aria-label={`Include ${l.categoryName}`} />
                                     <IonLabel>
                                         <h2 style={{ margin: 0 }}>{l.categoryName}</h2>
-                                        <p style={{ margin: '2px 0 0', fontSize: '11px' }}>
-                                            Budget {currencyFormatter.format(l.budget)} · Spent {currencyFormatter.format(l.spent)}
+                                        <p style={{ margin: '2px 0 0', fontSize: '11px', whiteSpace: 'normal', overflowWrap: 'anywhere' }}>
+                                            Budget {currencyFormatter.format(l.budget)}
+                                            <br />
+                                            Spent {currencyFormatter.format(l.spent)}
                                         </p>
                                     </IonLabel>
                                     <IonText slot='end' color={l.remaining < 0 ? 'danger' : checked ? 'dark' : 'medium'}>

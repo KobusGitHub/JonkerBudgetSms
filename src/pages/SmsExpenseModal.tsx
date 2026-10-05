@@ -275,7 +275,6 @@ const SmsExpenseModal: React.FC<Props> = ({
 
   return (
     <IonModal 
-      trigger='add-config' 
       // breakpoints={[1, 0.5]} 
       // initialBreakpoint={0.5} 
       ref={modalRef} 

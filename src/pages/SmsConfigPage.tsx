@@ -116,7 +116,9 @@ const SmsConfigPage: React.FC = () => {
             });
 
             console.log('smsConfig Fetched: ', smsConfigs);
-            setSmsConfigs(smsConfigs);
+            setSmsConfigs(smsConfigs.sort((first: SmsConfigModel, second: SmsConfigModel) =>
+                (first.categoryName ?? '').localeCompare(second.categoryName ?? '', undefined, { sensitivity: 'base' })
+            ));
         })
         return unsubscribe;
 
@@ -129,10 +131,13 @@ const SmsConfigPage: React.FC = () => {
 
         const identifiersQuery = query(collection(FIREBASE_DB, 'smsIdentifier'), where('shareToken', '==', user.uid));
         return onSnapshot(identifiersQuery, snapshot => {
-            setSmsIdentifiers(snapshot.docs.map(identifierDoc => ({
+            const identifiers = snapshot.docs.map(identifierDoc => ({
                 guidId: identifierDoc.id,
                 ...identifierDoc.data()
-            })) as SmsIdentifierModel[]);
+            })) as SmsIdentifierModel[];
+            setSmsIdentifiers(identifiers.sort((first, second) =>
+                first.identifier.localeCompare(second.identifier, undefined, { sensitivity: 'base' })
+            ));
         }, error => {
             console.error('SMS identifiers fetch failed:', error);
             presentToast({ message: 'Could not load SMS identifiers', duration: 3000, color: 'danger' });
@@ -396,6 +401,7 @@ const SmsConfigPage: React.FC = () => {
                 <SmsConfigModal 
                     modalRef={smsConfigModalRef}
                     categories={categories}
+                    smsConfigs={smsConfigs}
                     smsConfig={smsConfig}
                     setSmsConfig={setSmsConfig}
                     onDismiss={onSmsConfigModalDismiss}
